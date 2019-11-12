@@ -9,7 +9,7 @@ This model is aimed to produce projections between 1980 and 2030 on:
 - DALYs
 
 Key parameter required:
-- Matrix of Force of Infection interations from 1987 to 2030
+- Matrix of with Force-of-Infection values with 100 number of iterations from 1987 to 2030
 
 
 
