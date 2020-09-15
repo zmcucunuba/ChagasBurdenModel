@@ -4,12 +4,12 @@
 #====================================================
 #####################################################
 rm(list=ls(all.names=TRUE))
-library(xtable); library(Hmisc); require(ggplot2); library(reshape); require(grid)
+library(xtable); library(Hmisc); require(ggplot2); library(reshape); require(grid);library(Rcpp)
 
 source('funs/FormatingData.R')
 source('funs/GetParameterDistributions.R')
 source('funs/BoD_model.R')
-library(Rcpp)
+
 sourceCpp('funs/Rcpp_BurdenModel2.cpp')
 
 
