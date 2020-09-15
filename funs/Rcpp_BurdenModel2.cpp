@@ -26,7 +26,8 @@ Rcpp::List Rcpp_BurdenModel2(Rcpp::List params){
   int Ny  = as<int>( params["Ny"]);
   int Na  = as<int>( params["Na"]);
   int iters  = as<int>( params["iters"]);
-  NumericMatrix lambdaT  = as<NumericMatrix>( params["lambdaNy"]);
+  List  lambdaT  = as<List >( params["lambdaNy"]);
+//NumericMatrix lambdaT  = as<NumericMatrix>( params["lambdaNy"]);
   
 // Initial matrices
   IntegerVector v = {Na,iters,Ny};
@@ -91,20 +92,171 @@ Rcpp::List Rcpp_BurdenModel2(Rcpp::List params){
       
       
       //# Susceptibles Asymptomatic
-      //NumericVector lambdaT_t = as<NumericVector>(lambdaT.column(i)) ;
-      rm_S(j) = 1-exp(-(lambdaT(j,i) + mu_1(j) + alpha(j)) );
+      NumericVector lambdaT_t = lambdaT[i];
+      rm_S(j) = 1-exp(-(lambdaT_t(j) + mu_1(j) + alpha(j)) );
       S(k,j,i) = S(k,j,(i-1)) - rm_S(j) * S(k,j,(i-1));
       
+      //# Susceptibles Mild
+      rm_Sm(j) = 1-exp( - (mu_m(j) + beta(j) + lambdaT_t(j)) );
+      Sm(k,j,i) = Sm(k,j,(i-1)) - rm_Sm(j) * Sm(k,j,(i-1)) + alpha(j)/(lambdaT_t(j) + mu_1(j) + alpha(j)) * rm_S(j) * S(k,j,(i-1));
+      
+      //# Susceptibles Severe
+      rm_Ss(j) = 1-exp(-(mu_s(j) + lambdaT_t(j)));
+      Ss(k,j,i) = Ss(k,j,(i-1)) - rm_Ss(j) * Ss(k,j,(i-1)) + (beta(j)/(mu_m(j) + beta(j) + lambdaT_t(j))) * rm_Sm(j) * Sm(k,j,(i-1));
        
-      }
+      //##############################################
+      //#             INFECTED          
+      //##############################################
+       
+      //#==== Acute Mild =======
+      rm_Am(j) = 1-exp(-(mu_1(j) + delta(j)));
+      Am(k,j,i)= Am(k,j,(i-1)) - rm_Am(j) * Am(k,j,(i-1)) + (1-gamma(j))*(lambdaT_t(j)/(lambdaT_t(j)+ mu_1(j) + alpha(j)))* rm_S(j) * S(k,j,(i-1));
+       
+      //#==== Acute Severe=======
+      rm_As(j) = 1-exp(-(mu_1(j) + mu_a(j) + delta(j)));
+      As(k,j,i) = As(k,j,(i-1)) - rm_As(j) * As(k,j,(i-1)) + gamma(j) * (lambdaT_t(j)/(lambdaT_t(j)+ mu_1(j) + alpha(j))) * rm_S(j) * S(k,j,(i-1));
+       
+      //#==== Asymptomatic=======
+      rm_I(j) = 1-exp(-( mu_1(j) * RRm(j) + alpha(j) *RRp(j)));
+      I(k,j,i) = I(k,j,(i-1)) - rm_I(j) * I(k,j,(i-1)) + (delta(j)/ ( mu_1(j) + delta(j)))* rm_Am(j) * Am(k,j,(i-1));
+       
+      //#====== Chronic Moderate 1  
+      rm_Cm1(j) = 1-exp(-(mu_m(j) * RRm(j) + beta(j) * RRp(j))); 
+      Cm1(k,j,i) = Cm1(k,j,(i-1)) - rm_Cm1(j) * Cm1(k,j,(i-1)) + (alpha(j))/( mu_1(j) * RRm(j) + alpha(j) *RRp(j))*rm_I(j)*I(k,j,(i-1)) + 
+           lambdaT_t(j)/(mu_m(j) + beta(j) + lambdaT_t(j))*   rm_Sm(j) *Sm(k,j,(i-1));
+       
+      //#====== Chronic Moderate 2   
+      rm_Cm2(j) = 1-exp(-(mu_m(j) * RRm(j) + beta(j) *  RRp(j)));
+      Cm2(k,j,i) = Cm2(k,j,(i-1)) - rm_Cm2(j) * Cm2(k,j,(i-1)) + (delta(j))/(mu_1(j) + mu_a(j) + (delta(j)))*rm_As(j)*As(k,j,(i-1))+
+           (alpha(j) * (RRp(j)-1))/(( mu_1(j) * RRm(j) + alpha(j) *RRp(j))) * rm_I(j) *  I(k,j,(i-1)) ;
+       
+      //#====== Chronic Severe 1  
+      rm_Cs1(j)= 1- exp(-(mu_s(j)  * RRm(j))) ;
+      Cs1(k,j,i) = Cs1(k,j,(i-1)) - rm_Cs1(j) * Cs1(k,j,(i-1)) + (beta(j))/(mu_m(j) * RRm(j) + beta(j) * RRp(j)) * rm_Cm1(j) * Cm1(k,j,(i-1))+
+           lambdaT_t(j)/(mu_s(j) + lambdaT_t(j)) * rm_Ss(j)* Ss(k,j,(i-1));
+       
+       
+      //#====== Chronic Severe 2 
+      rm_Cs2(j) = 1- exp(-(mu_s(j) *RRm(j))) ;
+      Cs2(k,j,i) = Cs2(k,j,(i-1)) - rm_Cs2(j) * Cs2(k,j,(i-1)) + (beta(j) * (RRp(j) -1))/(mu_m(j) * 
+        RRm(j) + beta(j) * RRp(j)) * rm_Cm1(j) * Cm1(k,j,(i-1));
+       
+      //#====== Chronic Severe 3
+      rm_Cs3(j) = 1- exp(-(mu_s(j) *RRm(j))) ;
+      Cs3(k,j,i) = Cs3(k,j,(i-1)) - rm_Cs3(j) * Cs3 (k,j,(i-1)) + (beta(j) * RRp(j))/(mu_m(j) * RRm(j) + beta(j) * RRp(j)) * 
+        rm_Cm2(j) * Cm2(k,j,(i-1));
+       
+      //###################################
+      //#           DEATHS         
+      //###################################
+       
+       Da(k,j,i) = mu_a(j) / (mu_1(j) + mu_a(j)+(delta(j)))*rm_As(j)*As(k,j,(i-1));
+       
+       Di(k,j,i) = (mu_1(j)*(RRm(j)-1))/ ( mu_1(j) * RRm(j) + alpha(j) *RRp(j)) * rm_I(j) * I(k,j,(i-1));
+       
+       Dm(k,j,i) = (mu_m(j)*(RRm(j)-1)) / (mu_m(j) * RRm(j) + beta(j) * RRp(j)) * rm_Cm1(j) * Cm1(k,j,(i-1)) +
+         (mu_m(j)*(RRm(j)-1)) / (mu_m(j) * RRm(j) + beta(j) * RRp(j)) *      rm_Cm2(j) * Cm2(k,j,(i-1));
+       
+       
+       DmI(k,j,i) = (mu_m(j)*(1-(mu_1(j)/mu_m(j)))) / (mu_m(j) * RRm(j) + beta(j) * RRp(j)) *rm_Cm2(j) * Cm2(k,j,(i-1));
+       
+       
+       Ds(k,j,i) = (mu_s(j)*(RRm(j)-1)) /(mu_s(j) *RRm(j)) * rm_Cs1(j) * Cs1(k,j,(i-1))  +
+         (mu_s(j)*(RRm(j)-1)) /(mu_s(j) *RRm(j)) * rm_Cs2(j) * Cs2(k,j,(i-1))  +
+         (mu_s(j)*(RRm(j)-1)) /(mu_s(j) *RRm(j)) * rm_Cs3(j) * Cs3(k,j,(i-1)) ; 
+       
+       DsI(k,j,i) = (mu_s(j)*(1-(mu_m(j)/mu_s(j)))) /(mu_s(j) *RRm(j)) * rm_Cs2(j) *  
+         Cs2(k,j,(i-1)) + (mu_s(j)*(1-(mu_1(j)/mu_s(j)))) /(mu_s(j) *RRm(j)) * rm_Cs3(j) * Cs3(k,j,(i-1));
+       
+       Du(k,j,i) = (mu_1(j)/(lambdaT_t(j)+ mu_1(j) + alpha(j))* rm_S(j) * S(k,j,(i-1)) ) +       
+         mu_1(j)/(mu_1(j) + delta(j))* rm_Am(j) * Am(k,j,(i-1))   +                         
+         mu_1(j)/(mu_1(j) + mu_a(j)+ (delta(j)))*rm_As(j) *As(k,j,(i-1)) +                 
+         mu_1(j)/( mu_1(j) * RRm(j) + alpha(j) *RRp(j))*rm_I(j) *I(k,j,(i-1)) ;
+       
+       
+       DmS(k,j,i) =  mu_m(j)/(mu_m(j) * RRm(j) + beta(j)*RRp(j))*rm_Cm1(j) * Cm1(k,j,(i-1)) +          
+         (mu_m(j)*(mu_1(j)/mu_m(j)) )/(mu_m(j) * RRm(j) + beta(j) * RRp(j)) * rm_Cm2(j) * Cm2(k,j,(i-1)) +   
+         mu_m(j)/(mu_m(j)+beta(j)+lambdaT_t(j)) * rm_Sm(j) *Sm (k,j,(i-1)) ;                             
+       
+       
+       DsS(k,j,i) =  mu_s(j)/(mu_s(j)+lambdaT_t(j)) * rm_Ss(j) * Ss(k,j,(i-1)) +                      
+         mu_s(j)/(mu_s(j) *RRm(j)) * rm_Cs1(j) * Cs1(k,j,(i-1)) +                                   
+         (mu_s(j)*(mu_m(j)/mu_s(j)))/ (mu_s(j) *RRm(j)) * rm_Cs2(j) * Cs2(k,j,(i-1)) +          
+         (mu_s(j)*(mu_1(j)/mu_s(j)))/ (mu_s(j) *RRm(j)) * rm_Cs3(j) * Cs3(k,j,(i-1)) ;  
+       
+      //###################################
+      //#           TOTAL POPULATION
+      //###################################
+       
+       
+       //Tot =  
+         //S[,j,i] +  Sm[,j,i] + Ss[,j,i] + 
+         //Am[,j,i] +   As[,j,i] +  I[,j,i] + 
+         //Cm1[,j,i] + Cm2[,j,i] + 
+         //Cs1[,j,i] + Cs2[,j,i] + Cs3[,j,i]+
+         //Du[,j,i] +  Da[,j,i] +  Di[,j,i] + 
+         //Dm[,j,i] +  Ds[,j,i] +  
+         //DmI[,j,i] + DsI[,j,i] + 
+         //DmS[,j,i] + DsS[,j,i]
+       
+       //Tot_old <- S[,j,(i-1)] +  Sm[,j,(i-1)] + Ss[,j,(i-1)] + 
+         //Am[,j,(i-1)] +  As[,j,(i-1)] + I[,j,(i-1)]  +
+         //Cm1[,j,(i-1)] + Cm2[,j,(i-1)] +
+         //Cs1[,j,(i-1)] + Cs2[,j,(i-1)] + Cs3[,j,(i-1)] 
+         
+      //###################################
+      //#           AGEING
+      //###################################
+      }  
+      //# moving from age classes
+         //S(1:(Na),j,i) <- S[1:(Na-1),j,i]  # aging of susceptible 
+          // S[1,j,i] <- 1
+         
+        // Sm[2:(Na),j,i] <- Sm[1:(Na-1),j,i]  # aging of susceptible 
+          // Sm[1,j,i] <- 0
+         
+        // Ss[2:(Na),j,i] <- Ss[1:(Na-1),j,i]  # aging of susceptible 
+          // Ss[1,j,i] <- 0
+         
+      //# infected
+         //Am[2:(Na),j,i] <- Am[1:(Na-1),j,i]  # aging of infected
+           //Am[1,j,i] <- 0
+         
+         //As[2:(Na),j,i] <- As[1:(Na-1),j,i]  # aging of infected
+           //As[1,j,i] <- 0
+         
+         //I[2:(Na),j,i] <- I[1:(Na-1),j,i]  # aging of infected
+           //I[1,j,i] <- 0
+         
+        // Cm1[2:(Na),j,i] <- Cm1[1:(Na-1),j,i]  # aging of infected
+          // Cm1[1,j,i] <- 0
+         
+         //Cm2[2:(Na),j,i] <- Cm2[1:(Na-1),j,i]  # aging of infected
+           //Cm2[1,j,i] <- 0
+         
+         //Cs1[2:(Na),j,i] <- Cs1[1:(Na-1),j,i]  # aging of infected
+           //Cs1[1,j,i] <- 0
+         
+         //Cs2[2:(Na),j,i] <- Cs2[1:(Na-1),j,i]  # aging of infected
+           //Cs2[1,j,i] <- 0
+         
+         //Cs3[2:(Na),j,i] <- Cs3[1:(Na-1),j,i]  # aging of infected
+           //Cs3[1,j,i] <- 0 
+         
+       
+      
     }
   }
   
+  arma::cube Cs = Cs1 + Cs2 + Cs3;
+    arma::cube Cm = Cm1 + Cm2 ;
+    
+    arma::cube DSus = DmS + DsS;
   
   Rcpp::List out = Rcpp::List::create(Rcpp::Named("postS") = S,
                                       Rcpp::Named("postI") = rm_S,
                                       Rcpp::Named ("test")= rm_Cs3,
-                                      Rcpp::Named ("test2")= DmS);
+                                      Rcpp::Named ("test2")= DSus);
   return out;
 }
 
