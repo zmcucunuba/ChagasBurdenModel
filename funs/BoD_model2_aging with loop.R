@@ -249,18 +249,18 @@ BurdenModel2<- function(params)
       
       for (k in 2:Na){
         # moving from age classes
-        S[k,j,i] <- S[k-1,j,i]  # aging of susceptible 
-        Sm[k,j,i] <- Sm[k-1,j,i]  # aging of susceptible 
-        Ss[k,j,i] <- Ss[k-1,j,i]  # aging of susceptible 
+        S[(Na+2-k),j,i] <- S[(Na+2-k)-1,j,i]  # aging of susceptible 
+        Sm[(Na+2-k),j,i] <- Sm[(Na+2-k)-1,j,i]  # aging of susceptible 
+        Ss[(Na+2-k),j,i] <- Ss[(Na+2-k)-1,j,i]  # aging of susceptible 
         # infected
-        Am[k,j,i] <- Am[k-1,j,i]  # aging of infected
-        As[k,j,i] <- As[k-1,j,i]  # aging of infected
-        I[k,j,i] <- I[k-1,j,i]  # aging of infected
-        Cm1[k,j,i] <- Cm1[k-1,j,i]  # aging of infected
-        Cm2[k,j,i] <- Cm2[k-1,j,i]  # aging of infected
-        Cs1[k,j,i] <- Cs1[k-1,j,i]  # aging of infected
-        Cs2[k,j,i] <- Cs2[k-1,j,i]  # aging of infected
-        Cs3[k,j,i] <- Cs3[k-1,j,i]  # aging of infected
+        Am[(Na+2-k),j,i] <- Am[(Na+2-k)-1,j,i]  # aging of infected
+        As[(Na+2-k),j,i] <- As[(Na+2-k)-1,j,i]  # aging of infected
+        I[(Na+2-k),j,i] <- I[(Na+2-k)-1,j,i]  # aging of infected
+        Cm1[(Na+2-k),j,i] <- Cm1[(Na+2-k)-1,j,i]  # aging of infected
+        Cm2[(Na+2-k),j,i] <- Cm2[(Na+2-k)-1,j,i]  # aging of infected
+        Cs1[(Na+2-k),j,i] <- Cs1[(Na+2-k)-1,j,i]  # aging of infected
+        Cs2[(Na+2-k),j,i] <- Cs2[(Na+2-k)-1,j,i]  # aging of infected
+        Cs3[(Na+2-k),j,i] <- Cs3[(Na+2-k)-1,j,i]  # aging of infected
         
       }
       S[1,j,i] <- 1

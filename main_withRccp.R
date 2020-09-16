@@ -8,7 +8,7 @@ library(xtable); library(Hmisc); require(ggplot2); library(reshape); require(gri
 
 source('funs/FormatingData.R')
 source('funs/GetParameterDistributions.R')
-source('funs/BoD_model.R')
+source('funs/BoD_model2.R')
 
 sourceCpp('funs/Rcpp_BurdenModel2.cpp')
 
@@ -20,26 +20,13 @@ lambdaNy <- FOI_import_and_format(place_name)
 params   <- get_parameter_distribution(lambdaNy, place_name, setting_type)
 
 
-### check Rcpp
+output <- Rcpp_BurdenModel2(params)
 
-res <- Rcpp_BurdenModel2(params)
-
-##########
-
-
-
-
-
-
-# output   <- BurdenModel(params)
+output2   <- BurdenModel2(params)
 # saveRDS(output, paste0('res/', place_name, '_output.RDS'))
 
-output <- readRDS(paste0('../ChagasBurdenModel_res/', place_name, '_output.RDS'))
+#output <- readRDS(paste0('../ChagasBurdenModel_res/', place_name, '_output.RDS'))
 # I'm here!!!----------------------------------------
-
-
-
-
 
 
 
@@ -47,9 +34,18 @@ par(mar=c(2, 4, 4, 2), xpd=F)
 (par(mfrow=c(2,2)))
 
 
-boxplot(lambdaD, main=c("Lambda over 160 years", place),col= "red",
+boxplot(lambdaNy, main=c("Lambda over 160 years", place_name),col= "red",
         ylab="FOI x 1000", xlab="Simulated years", outline=FALSE)
 
+
+I_Array<- output$I
+Cm_Array<- output$Cm
+Cs_Array<- output$Cs
+Am_Array<- output$Am
+As_Array<- output$As
+S_Array<- output$S
+Sm_Array<- output$Sm
+Ss_Array<- output$Ss
 ###############################################################
 #            Chagas Infection and Disease Prevalence          #
 ###############################################################
