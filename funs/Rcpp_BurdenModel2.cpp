@@ -63,7 +63,7 @@ Rcpp::List Rcpp_BurdenModel2(Rcpp::List params){
   for (int i = 0; i < v[0]; ++i) {
     for (int j = 0; j < v[1]; ++j) {
       
-      S(i,j,1) = 1;
+      S(i,j,0) = 1;
     }
   }
   

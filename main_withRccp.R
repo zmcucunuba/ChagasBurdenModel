@@ -19,11 +19,15 @@ setting_type <- 'total'
 lambdaNy <- FOI_import_and_format(place_name)
 params   <- get_parameter_distribution(lambdaNy, place_name, setting_type)
 
-
+# params$alphaD <-params$alphaD *(1+5/100)
 output <- Rcpp_BurdenModel2(params)
+
 
 output2   <- BurdenModel2(params)
 # saveRDS(output, paste0('res/', place_name, '_output.RDS'))
+if(all.equal(output2,output)==FALSE){
+  warning('kelharjkd')
+}
 
 #output <- readRDS(paste0('../ChagasBurdenModel_res/', place_name, '_output.RDS'))
 # I'm here!!!----------------------------------------
