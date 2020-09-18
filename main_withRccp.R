@@ -14,6 +14,7 @@ sourceCpp('funs/Rcpp_BurdenModel2.cpp')
 
 
 place_name <-  'Santander'
+place <- place_name
 setting_type <- 'total'
 
 lambdaNy <- FOI_import_and_format(place_name)
@@ -23,11 +24,11 @@ params   <- get_parameter_distribution(lambdaNy, place_name, setting_type)
 output <- Rcpp_BurdenModel2(params)
 
 
-output2   <- BurdenModel2(params)
+#output2   <- BurdenModel2(params)
 # saveRDS(output, paste0('res/', place_name, '_output.RDS'))
-if(all.equal(output2,output)==FALSE){
-  warning('kelharjkd')
-}
+#if(all.equal(output2,output)==FALSE){
+  #warning('kelharjkd')
+#}
 
 #output <- readRDS(paste0('../ChagasBurdenModel_res/', place_name, '_output.RDS'))
 # I'm here!!!----------------------------------------
@@ -41,15 +42,31 @@ par(mar=c(2, 4, 4, 2), xpd=F)
 boxplot(lambdaNy, main=c("Lambda over 160 years", place_name),col= "red",
         ylab="FOI x 1000", xlab="Simulated years", outline=FALSE)
 
-
-I_Array<- output$I
-Cm_Array<- output$Cm
-Cs_Array<- output$Cs
-Am_Array<- output$Am
-As_Array<- output$As
 S_Array<- output$S
 Sm_Array<- output$Sm
 Ss_Array<- output$Ss
+Am_Array<- output$Am
+As_Array<- output$As
+I_Array<- output$I
+Cm_Array<- output$Cm
+Cs_Array<- output$Cs
+Da_Array<- output$Da
+Di_Array<- output$Di
+Dm_Array<- output$Dm
+DmI_Array<- output$DmI
+Ds_Array<- output$Ds
+DsI_Array<- output$DsI
+Du_Array<- output$Du
+DmS_Array<- output$DmS
+DsS_Array<- output$DsS
+
+NySim    <- as.numeric(min(names(lambdaNy))): as.numeric(max(names(lambdaNy))) # Years of Symulation
+lambdaD<- lambdaNy
+iterdis<-params$iter
+DeathsObs<-Deaths_import_and_format(place)
+Obs.Pop<- Pop_import_and_format(place, setting_type )
+
+Na<- params$Na
 ###############################################################
 #            Chagas Infection and Disease Prevalence          #
 ###############################################################
@@ -813,7 +830,6 @@ sum(Deaths.NonCha[,5,36])/sum(DeathsObs[,36])
 par(mar=c(2, 4, 4, 2), xpd=F)
 (par(mfrow=c(3,2)))
 
-
 #================================== 
 #                YLL 
 #==================================
@@ -840,7 +856,7 @@ YLD.Cs <- array(NA, dim=c((Na/5),iterdis,36))
 for (i in 1:36){  
   for (j in 1:iterdis){  
     for (k in 1: 85){
-      YLD.Am[,j,i] <- CasesAm[,j,i] * wamD[j]
+      YLD.Am[,j,i] <- CasesAm[,j,i] * wamD[j] ## Need to run GetParameterDistributions
       YLD.As[,j,i] <- CasesAs[,j,i] * wasD[j]
       YLD.Cm[,j,i] <- CasesCm[,j,i] * wcmD[j]
       YLD.Cs[,j,i] <- CasesCs[,j,i] * wcsD[j]
