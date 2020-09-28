@@ -5,20 +5,24 @@
 # Julia ledien 21/09/2020
 
 rm(list=ls(all.names=TRUE))
-library(xtable); library(Hmisc); require(ggplot2); library(reshape); require(grid);library(Rcpp); library(readxl)
+library(xtable); library(Hmisc); require(ggplot2); library(reshape); require(grid);library(Rcpp); library(readxl);library(sp); library(rgdal)
 
 source('funs/ADM2_FormatingData.R')
 source('funs/ADM2_GetParameterDistributions.R')
 sourceCpp('funs/Rcpp_BurdenModel2.cpp')
 
 #======== To be defined ==============
-setting_type <- "rural"
+setting_type <- "urban"
 Nb_iter=100
 # ====================================
 
+
 dico<- read_xlsx("data/dem/dictionnaire ADM2 Names.xlsx")
 municipalities<- unique(dico$GID_2_GDAM)
+
 municipalities <- municipalities[is.na(municipalities)==F]
+municipalities<- municipalities[887:length(municipalities)]
+for(setting_type in c( "urban")){
 Med_CasesTotal<- matrix(NA, length(municipalities),36)
 QuantLo_CasesTotal <- matrix (NA, length(municipalities),36)
 QuantUp_CasesTotal<- matrix(NA, length(municipalities),36)
@@ -47,6 +51,8 @@ params   <- ADM2_get_parameter_distribution(lambdaNy, place_name, setting_type)
 # params$alphaD <-params$alphaD *(1+5/100)
 output <- Rcpp_BurdenModel2(params)
 #saveRDS(output, paste0('res/out/', place_name, "_",setting_type, '_output.RDS'))
+
+saveRDS(output, paste0("D:/Travail/BurdenModel/LinearModels/outputs_100_it/",setting_type, "/", place_name, "_",setting_type, '_output.RDS'))}}
 
 
 S_Array<- output$S
@@ -102,7 +108,7 @@ CasesCha <- array(NA, dim=c(Nb_AgeClass,iterdis,36)) # TOTAL number of cases
 for (i in 1:iterdis){
   for (j in 1:Nb_AgeClass){
     for (k in 1:36){
-      CasesCha[j,i,k]<- round(Prev.Chx5.36y[j,i,k] * Obs.Pop[j,k] )
+      CasesCha[j,i,k]<- (Prev.Chx5.36y[j,i,k] * Obs.Pop[j,k] )
     }}}
 
 CasesTotal<- matrix(NA, iterdis,36)
@@ -119,9 +125,9 @@ CV_CasesTotal[place_name,] <-   apply(CasesTotal,2,sd) / apply(CasesTotal,2,mean
 
 
 #=============================================================
-#Total number of severe cases by year from 1985 to 2020
+#Total number of severe cardiomiopathy cases by year from 1985 to 2020
 Prev.CA.Sev <-array(NA, dim=c(Nb_AgeClass, iterdis, 160))
-A<- Prev.CA.Sev;  A5<-  (As_Array )/TotPop
+A<- Prev.CA.Sev;  A5<-  (Cs_Array )/TotPop
 for (l in 1:160){
   for(n in 1:iterdis){
     for(k in 1:85){
@@ -139,7 +145,7 @@ CasesChaSev <- array(NA, dim=c(Nb_AgeClass,iterdis,36)) # TOTAL number of cases
 for (i in 1:iterdis){
   for (j in 1:Nb_AgeClass){
     for (k in 1:36){
-      CasesChaSev[j,i,k]<- round(Prev.CA.Sev.36y[j,i,k] * Obs.Pop[j,k] )
+      CasesChaSev[j,i,k]<- (Prev.CA.Sev.36y[j,i,k] * Obs.Pop[j,k] )
     }}}
 
 SevCasesTotal<- matrix(NA, iterdis,36)
@@ -173,10 +179,9 @@ saveRDS(CV_SevCasesTotal, paste("res/summaries/ADM2_CV_SevereCasesTotal", settin
 ############################################################
 # Creating shapefiles
 
-library(sp)
-library(rgdal)
 
 ColombiaADM2<-readRDS("C:/Users/Julia L/Documents/GitHub/chagas-ML/data/Colombia BackgroundMaps/format sp/gadm36_COL_2_sp.rds")
+
 
 for (shap in c("Median_CasesTotal", "CV_CasesTotal", "Median_SevereCasesTotal", "CV_SevereCasesTotal")){
   dat<- readRDS(paste("res/summaries/ADM2",shap, setting_type, iterdis, "it", sep="_"))
@@ -187,6 +192,7 @@ for (shap in c("Median_CasesTotal", "CV_CasesTotal", "Median_SevereCasesTotal", 
   COL_t<- ColombiaADM2
   COL_t@data<- data.frame(COL_t@data,dat[match(COL_t@data[,"GID_2"], dat[,"ADM2"]),])
   colnames(COL_t@data)
-  spplot(COL_t[,"FoI1990"])
+  #spplot(COL_t[,"FoI1990"])
   writeOGR(COL_t, paste("res/shapefiles/geo",shap, setting_type,iterdis,"it", sep="_"), layer=paste(shap,setting_type,iterdis,"it", sep="_"), driver="ESRI Shapefile")
+}
 }
