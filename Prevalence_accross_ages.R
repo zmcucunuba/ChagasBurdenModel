@@ -4,10 +4,10 @@
 ####### To be defined
 year<- 2020
 object <- "Median_CasesTotal"
-setting= "urban"
+setting= "rural"
 it = 100
 #######
- library(readxl)
+ library(readxl);library(rgdal)
 dico<- read_xlsx("data/dem/dictionnaire ADM2 Names.xlsx")
 municipalities<- unique(dico$GID_2_GDAM)
 municipalities<- municipalities[is.na(municipalities)==F]
@@ -36,6 +36,6 @@ Med_Prev[c("COL.32.4_1", "COL.32.5_1"),]<- Med_Prev["COL.32.1_1",]
 Med_Prev$ADM2<- rownames(Med_Prev)
 COL <- readRDS("C:/Users/Julia L/Documents/GitHub/chagas-ML/data/Colombia BackgroundMaps/format sp/gadm36_COL_2_sp.rds")
 COL@data<- data.frame(COL@data, Med_Prev[match(COL@data[,"GID_2"], Med_Prev[,"ADM2"]),])
-spplot(COL["FoI2000"])
+spplot(COL["FoI2020"])
 writeOGR(COL, paste("res/shapefiles/Prevalence", object,setting, it,"it", sep="_"), layer=paste("Prevalence", object, setting, it, "it", sep="_"), driver = "ESRI Shapefile")
 
