@@ -122,8 +122,8 @@ for(i in 1:iterdis){
   }
 }
 Med_CasesTotal[ place_name,]<- round(apply(CasesTotal,2,median))
-QuantLo_CasesTotal[place_name,]<- round(apply(CasesTotal,2,quantile,c(0.05)))
-QuantUp_CasesTotal[place_name,]<-round(apply(CasesTotal,2,quantile,c(0.95)))
+QuantLo_CasesTotal[place_name,]<- round(apply(CasesTotal,2,quantile,c(0.025)))
+QuantUp_CasesTotal[place_name,]<-round(apply(CasesTotal,2,quantile,c(0.975)))
 CV_CasesTotal[place_name,] <-   apply(CasesTotal,2,sd) / apply(CasesTotal,2,mean)
 
 #=============================================================
