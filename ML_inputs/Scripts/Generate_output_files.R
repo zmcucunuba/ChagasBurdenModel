@@ -35,8 +35,8 @@ template<- array(NA,dim=c(length(municipalities),9,length(years)),dimnames = lis
 ### Stage of the disease:
 ### Acute = StAc
 ### Asymptomatic = StAs
-### Chronic = StCh
-### Severe = StChS
+### Chronic mild= StCh
+### Chronic Severe = StChS
 ### All Infected = StI
 
 NbCases_AC1_StAc <- template
@@ -222,3 +222,381 @@ DALYs_ACt_StAs <- template
 DALYs_ACt_StCh <- template
 DALYs_ACt_StChS <- template
 DALYs_ACt_StI <- template
+
+
+##national level
+
+National_template<- matrix(0,iterdis,length(years))
+National_NbCases_AC1_StAc <- National_template
+National_NbCases_AC1_StAs <- National_template
+National_NbCases_AC1_StCh <- National_template
+National_NbCases_AC1_StChS <- National_template
+National_NbCases_AC1_StI <- National_template
+
+National_NbCases_AC2_StAc <- National_template
+National_NbCases_AC2_StAs <- National_template
+National_NbCases_AC2_StCh <- National_template
+National_NbCases_AC2_StChS <- National_template
+National_NbCases_AC2_StI <- National_template
+
+National_NbCases_AC3_StAc <- National_template
+National_NbCases_AC3_StAs <- National_template
+National_NbCases_AC3_StCh <- National_template
+National_NbCases_AC3_StChS <- National_template
+National_NbCases_AC3_StI <- National_template
+
+National_NbCases_AC4_StAc <- National_template
+National_NbCases_AC4_StAs <- National_template
+National_NbCases_AC4_StCh <- National_template
+National_NbCases_AC4_StChS <- National_template
+National_NbCases_AC4_StI <- National_template
+
+National_NbCases_AC5_StAc <- National_template
+National_NbCases_AC5_StAs <- National_template
+National_NbCases_AC5_StCh <- National_template
+National_NbCases_AC5_StChS <- National_template
+National_NbCases_AC5_StI <- National_template
+
+National_NbCases_ACt_StAc <- National_template
+National_NbCases_ACt_StAs <- National_template
+National_NbCases_ACt_StCh <- National_template
+National_NbCases_ACt_StChS <- National_template
+National_NbCases_ACt_StI <- National_template
+
+###
+National_NbDeath_AC1_StAc <- National_template
+National_NbDeath_AC1_StAs <- National_template
+National_NbDeath_AC1_StCh <- National_template
+National_NbDeath_AC1_StChS <- National_template
+National_NbDeath_AC1_StI <- National_template
+
+National_NbDeath_AC2_StAc <- National_template
+National_NbDeath_AC2_StAs <- National_template
+National_NbDeath_AC2_StCh <- National_template
+National_NbDeath_AC2_StChS <- National_template
+National_NbDeath_AC2_StI <- National_template
+
+National_NbDeath_AC3_StAc <- National_template
+National_NbDeath_AC3_StAs <- National_template
+National_NbDeath_AC3_StCh <- National_template
+National_NbDeath_AC3_StChS <- National_template
+National_NbDeath_AC3_StI <- National_template
+
+National_NbDeath_AC4_StAc <- National_template
+National_NbDeath_AC4_StAs <- National_template
+National_NbDeath_AC4_StCh <- National_template
+National_NbDeath_AC4_StChS <- National_template
+National_NbDeath_AC4_StI <- National_template
+
+National_NbDeath_AC5_StAc <- National_template
+National_NbDeath_AC5_StAs <- National_template
+National_NbDeath_AC5_StCh <- National_template
+National_NbDeath_AC5_StChS <- National_template
+National_NbDeath_AC5_StI <- National_template
+
+National_NbDeath_ACt_StAc <- National_template
+National_NbDeath_ACt_StAs <- National_template
+National_NbDeath_ACt_StCh <- National_template
+National_NbDeath_ACt_StChS <- National_template
+National_NbDeath_ACt_StI <- National_template
+
+##
+National_YLL_AC1_StAc <- National_template
+National_YLL_AC1_StAs <- National_template
+National_YLL_AC1_StCh <- National_template
+National_YLL_AC1_StChS <- National_template
+National_YLL_AC1_StI <- National_template
+
+National_YLL_AC2_StAc <- National_template
+National_YLL_AC2_StAs <- National_template
+National_YLL_AC2_StCh <- National_template
+National_YLL_AC2_StChS <- National_template
+National_YLL_AC2_StI <- National_template
+
+National_YLL_AC3_StAc <- National_template
+National_YLL_AC3_StAs <- National_template
+National_YLL_AC3_StCh <- National_template
+National_YLL_AC3_StChS <- National_template
+National_YLL_AC3_StI <- National_template
+
+National_YLL_AC4_StAc <- National_template
+National_YLL_AC4_StAs <- National_template
+National_YLL_AC4_StCh <- National_template
+National_YLL_AC4_StChS <- National_template
+National_YLL_AC4_StI <- National_template
+
+National_YLL_AC5_StAc <- National_template
+National_YLL_AC5_StAs <- National_template
+National_YLL_AC5_StCh <- National_template
+National_YLL_AC5_StChS <- National_template
+National_YLL_AC5_StI <- National_template
+
+National_YLL_ACt_StAc <- National_template
+National_YLL_ACt_StAs <- National_template
+National_YLL_ACt_StCh <- National_template
+National_YLL_ACt_StChS <- National_template
+National_YLL_ACt_StI <- National_template
+
+##
+National_YLD_AC1_StAc <- National_template
+#YLD_AC1_StAs <- National_template
+National_YLD_AC1_StCh <- National_template
+National_YLD_AC1_StChS <- National_template
+National_YLD_AC1_StI <- National_template
+
+National_YLD_AC2_StAc <- National_template
+#YLD_AC2_StAs <- National_template
+National_YLD_AC2_StCh <- National_template
+National_YLD_AC2_StChS <- National_template
+National_YLD_AC2_StI <- National_template
+
+National_YLD_AC3_StAc <- National_template
+#YLD_AC3_StAs <- National_template
+National_YLD_AC3_StCh <- National_template
+National_YLD_AC3_StChS <- National_template
+National_YLD_AC3_StI <- National_template
+
+National_YLD_AC4_StAc <- National_template
+#YLD_AC4_StAs <- National_template
+National_YLD_AC4_StCh <- National_template
+National_YLD_AC4_StChS <- National_template
+National_YLD_AC4_StI <- National_template
+
+National_YLD_AC5_StAc <- National_template
+#YLD_AC5_StAs <- National_template
+National_YLD_AC5_StCh <- National_template
+National_YLD_AC5_StChS <- National_template
+National_YLD_AC5_StI <- National_template
+
+National_YLD_ACt_StAc <- National_template
+#YLD_ACt_StAs <- National_template
+National_YLD_ACt_StCh <- National_template
+National_YLD_ACt_StChS <- National_template
+National_YLD_ACt_StI <- National_template
+
+##
+National_DALYs_AC1_StAc <- National_template
+National_DALYs_AC1_StAs <- National_template
+National_DALYs_AC1_StCh <- National_template
+National_DALYs_AC1_StChS <- National_template
+National_DALYs_AC1_StI <- National_template
+
+National_DALYs_AC2_StAc <- National_template
+National_DALYs_AC2_StAs <- National_template
+National_DALYs_AC2_StCh <- National_template
+National_DALYs_AC2_StChS <- National_template
+National_DALYs_AC2_StI <- National_template
+
+National_DALYs_AC3_StAc <- National_template
+National_DALYs_AC3_StAs <- National_template
+National_DALYs_AC3_StCh <- National_template
+National_DALYs_AC3_StChS <- National_template
+National_DALYs_AC3_StI <- National_template
+
+National_DALYs_AC4_StAc <- National_template
+National_DALYs_AC4_StAs <- National_template
+National_DALYs_AC4_StCh <- National_template
+National_DALYs_AC4_StChS <- National_template
+National_DALYs_AC4_StI <- National_template
+
+National_DALYs_AC5_StAc <- National_template
+National_DALYs_AC5_StAs <- National_template
+National_DALYs_AC5_StCh <- National_template
+National_DALYs_AC5_StChS <- National_template
+National_DALYs_AC5_StI <- National_template
+
+National_DALYs_ACt_StAc <- National_template
+National_DALYs_ACt_StAs <- National_template
+National_DALYs_ACt_StCh <- National_template
+National_DALYs_ACt_StChS <- National_template
+National_DALYs_ACt_StI <- National_template
+
+##Dep level
+c.names<-1:iterdis
+r.names<- unique(dico$NAME_1_GDAM)
+m.names<- years
+Dep_template<- array(0,dim=c(length(unique(dico$NAME_1_GDAM)),iterdis,length(years)),dimnames = list(r.names, c.names, m.names))
+
+Dep_NbCases_AC1_StAc <- Dep_template
+Dep_NbCases_AC1_StAs <- Dep_template
+Dep_NbCases_AC1_StCh <- Dep_template
+Dep_NbCases_AC1_StChS <- Dep_template
+Dep_NbCases_AC1_StI <- Dep_template
+
+Dep_NbCases_AC2_StAc <- Dep_template
+Dep_NbCases_AC2_StAs <- Dep_template
+Dep_NbCases_AC2_StCh <- Dep_template
+Dep_NbCases_AC2_StChS <- Dep_template
+Dep_NbCases_AC2_StI <- Dep_template
+
+Dep_NbCases_AC3_StAc <- Dep_template
+Dep_NbCases_AC3_StAs <- Dep_template
+Dep_NbCases_AC3_StCh <- Dep_template
+Dep_NbCases_AC3_StChS <- Dep_template
+Dep_NbCases_AC3_StI <- Dep_template
+
+Dep_NbCases_AC4_StAc <- Dep_template
+Dep_NbCases_AC4_StAs <- Dep_template
+Dep_NbCases_AC4_StCh <- Dep_template
+Dep_NbCases_AC4_StChS <- Dep_template
+Dep_NbCases_AC4_StI <- Dep_template
+
+Dep_NbCases_AC5_StAc <- Dep_template
+Dep_NbCases_AC5_StAs <- Dep_template
+Dep_NbCases_AC5_StCh <- Dep_template
+Dep_NbCases_AC5_StChS <- Dep_template
+Dep_NbCases_AC5_StI <- Dep_template
+
+Dep_NbCases_ACt_StAc <- Dep_template
+Dep_NbCases_ACt_StAs <- Dep_template
+Dep_NbCases_ACt_StCh <- Dep_template
+Dep_NbCases_ACt_StChS <- Dep_template
+Dep_NbCases_ACt_StI <- Dep_template
+
+###
+Dep_NbDeath_AC1_StAc <- Dep_template
+Dep_NbDeath_AC1_StAs <- Dep_template
+Dep_NbDeath_AC1_StCh <- Dep_template
+Dep_NbDeath_AC1_StChS <- Dep_template
+Dep_NbDeath_AC1_StI <- Dep_template
+
+Dep_NbDeath_AC2_StAc <- Dep_template
+Dep_NbDeath_AC2_StAs <- Dep_template
+Dep_NbDeath_AC2_StCh <- Dep_template
+Dep_NbDeath_AC2_StChS <- Dep_template
+Dep_NbDeath_AC2_StI <- Dep_template
+
+Dep_NbDeath_AC3_StAc <- Dep_template
+Dep_NbDeath_AC3_StAs <- Dep_template
+Dep_NbDeath_AC3_StCh <- Dep_template
+Dep_NbDeath_AC3_StChS <- Dep_template
+Dep_NbDeath_AC3_StI <- Dep_template
+
+Dep_NbDeath_AC4_StAc <- Dep_template
+Dep_NbDeath_AC4_StAs <- Dep_template
+Dep_NbDeath_AC4_StCh <- Dep_template
+Dep_NbDeath_AC4_StChS <- Dep_template
+Dep_NbDeath_AC4_StI <- Dep_template
+
+Dep_NbDeath_AC5_StAc <- Dep_template
+Dep_NbDeath_AC5_StAs <- Dep_template
+Dep_NbDeath_AC5_StCh <- Dep_template
+Dep_NbDeath_AC5_StChS <- Dep_template
+Dep_NbDeath_AC5_StI <- Dep_template
+
+Dep_NbDeath_ACt_StAc <- Dep_template
+Dep_NbDeath_ACt_StAs <- Dep_template
+Dep_NbDeath_ACt_StCh <- Dep_template
+Dep_NbDeath_ACt_StChS <- Dep_template
+Dep_NbDeath_ACt_StI <- Dep_template
+
+##
+Dep_YLL_AC1_StAc <- Dep_template
+Dep_YLL_AC1_StAs <- Dep_template
+Dep_YLL_AC1_StCh <- Dep_template
+Dep_YLL_AC1_StChS <- Dep_template
+Dep_YLL_AC1_StI <- Dep_template
+
+Dep_YLL_AC2_StAc <- Dep_template
+Dep_YLL_AC2_StAs <- Dep_template
+Dep_YLL_AC2_StCh <- Dep_template
+Dep_YLL_AC2_StChS <- Dep_template
+Dep_YLL_AC2_StI <- Dep_template
+
+Dep_YLL_AC3_StAc <- Dep_template
+Dep_YLL_AC3_StAs <- Dep_template
+Dep_YLL_AC3_StCh <- Dep_template
+Dep_YLL_AC3_StChS <- Dep_template
+Dep_YLL_AC3_StI <- Dep_template
+
+Dep_YLL_AC4_StAc <- Dep_template
+Dep_YLL_AC4_StAs <- Dep_template
+Dep_YLL_AC4_StCh <- Dep_template
+Dep_YLL_AC4_StChS <- Dep_template
+Dep_YLL_AC4_StI <- Dep_template
+
+Dep_YLL_AC5_StAc <- Dep_template
+Dep_YLL_AC5_StAs <- Dep_template
+Dep_YLL_AC5_StCh <- Dep_template
+Dep_YLL_AC5_StChS <- Dep_template
+Dep_YLL_AC5_StI <- Dep_template
+
+Dep_YLL_ACt_StAc <- Dep_template
+Dep_YLL_ACt_StAs <- Dep_template
+Dep_YLL_ACt_StCh <- Dep_template
+Dep_YLL_ACt_StChS <- Dep_template
+Dep_YLL_ACt_StI <- Dep_template
+
+##
+Dep_YLD_AC1_StAc <- Dep_template
+#YLD_AC1_StAs <- Dep_template
+Dep_YLD_AC1_StCh <- Dep_template
+Dep_YLD_AC1_StChS <- Dep_template
+Dep_YLD_AC1_StI <- Dep_template
+
+Dep_YLD_AC2_StAc <- Dep_template
+#YLD_AC2_StAs <- Dep_template
+Dep_YLD_AC2_StCh <- Dep_template
+Dep_YLD_AC2_StChS <- Dep_template
+Dep_YLD_AC2_StI <- Dep_template
+
+Dep_YLD_AC3_StAc <- Dep_template
+#YLD_AC3_StAs <- Dep_template
+Dep_YLD_AC3_StCh <- Dep_template
+Dep_YLD_AC3_StChS <- Dep_template
+Dep_YLD_AC3_StI <- Dep_template
+
+Dep_YLD_AC4_StAc <- Dep_template
+#YLD_AC4_StAs <- Dep_template
+Dep_YLD_AC4_StCh <- Dep_template
+Dep_YLD_AC4_StChS <- Dep_template
+Dep_YLD_AC4_StI <- Dep_template
+
+Dep_YLD_AC5_StAc <- Dep_template
+#YLD_AC5_StAs <- Dep_template
+Dep_YLD_AC5_StCh <- Dep_template
+Dep_YLD_AC5_StChS <- Dep_template
+Dep_YLD_AC5_StI <- Dep_template
+
+Dep_YLD_ACt_StAc <- Dep_template
+#YLD_ACt_StAs <- Dep_template
+Dep_YLD_ACt_StCh <- Dep_template
+Dep_YLD_ACt_StChS <- Dep_template
+Dep_YLD_ACt_StI <- Dep_template
+
+##
+Dep_DALYs_AC1_StAc <- Dep_template
+Dep_DALYs_AC1_StAs <- Dep_template
+Dep_DALYs_AC1_StCh <- Dep_template
+Dep_DALYs_AC1_StChS <- Dep_template
+Dep_DALYs_AC1_StI <- Dep_template
+
+Dep_DALYs_AC2_StAc <- Dep_template
+Dep_DALYs_AC2_StAs <- Dep_template
+Dep_DALYs_AC2_StCh <- Dep_template
+Dep_DALYs_AC2_StChS <- Dep_template
+Dep_DALYs_AC2_StI <- Dep_template
+
+Dep_DALYs_AC3_StAc <- Dep_template
+Dep_DALYs_AC3_StAs <- Dep_template
+Dep_DALYs_AC3_StCh <- Dep_template
+Dep_DALYs_AC3_StChS <- Dep_template
+Dep_DALYs_AC3_StI <- Dep_template
+
+Dep_DALYs_AC4_StAc <- Dep_template
+Dep_DALYs_AC4_StAs <- Dep_template
+Dep_DALYs_AC4_StCh <- Dep_template
+Dep_DALYs_AC4_StChS <- Dep_template
+Dep_DALYs_AC4_StI <- Dep_template
+
+Dep_DALYs_AC5_StAc <- Dep_template
+Dep_DALYs_AC5_StAs <- Dep_template
+Dep_DALYs_AC5_StCh <- Dep_template
+Dep_DALYs_AC5_StChS <- Dep_template
+Dep_DALYs_AC5_StI <- Dep_template
+
+Dep_DALYs_ACt_StAc <- Dep_template
+Dep_DALYs_ACt_StAs <- Dep_template
+Dep_DALYs_ACt_StCh <- Dep_template
+Dep_DALYs_ACt_StChS <- Dep_template
+Dep_DALYs_ACt_StI <- Dep_template

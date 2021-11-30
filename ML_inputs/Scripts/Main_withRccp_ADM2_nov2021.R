@@ -69,7 +69,7 @@ for (place_name in municipalities){
   TotPop = (S_Array + Sm_Array + Ss_Array + Am_Array + As_Array + I_Array + Cm_Array + Cs_Array) # Total Population per year
   StAc_Pop <-  Am_Array + As_Array 
   StAs_Pop <-  I_Array 
-  StCh_Pop <-  Cm_Array + Cs_Array
+  StCh_Pop <-  Cm_Array 
   StChS_Pop <- Cs_Array
   StI_Pop <-  Am_Array + As_Array + I_Array + Cm_Array + Cs_Array
   
@@ -77,7 +77,7 @@ for (place_name in municipalities){
   
   Prev <-array(NA, dim=c(Nb_AgeClass, iterdis, 160))
   Prev_Ac<- Prev;  Prev_As<- Prev; Prev_Ch<- Prev; Prev_ChS<- Prev; Prev_I<- Prev;
-  BU_prev_Am<- Prev; BU_prev_As<- Prev; BU_prev_Cm<- Prev
+  BU_prev_Am<- Prev; BU_prev_As<- Prev
   
   for (l in 1:160){
     for(n in 1:iterdis){
@@ -89,7 +89,7 @@ for (place_name in municipalities){
         Prev_I[k,n,l]<-  StI_Pop[k,n,l]/TotPop[k,n,l]
         BU_prev_Am[k,n,l]<-  Am_Array[k,n,l]/TotPop[k,n,l]
         BU_prev_As[k,n,l]<-  As_Array[k,n,l]/TotPop[k,n,l]
-        BU_prev_Cm[k,n,l]<-  Cm_Array[k,n,l]/TotPop[k,n,l]
+       
       }
       for (k in 85: Nb_AgeClass){
         Prev_Ac[k,n,l]<-  StAc_Pop[85,n,l]/TotPop[85,n,l] #extending data to all age classes
@@ -99,7 +99,7 @@ for (place_name in municipalities){
         Prev_I[k,n,l]<-  StI_Pop[85,n,l]/TotPop[85,n,l]
         BU_prev_Am[k,n,l]<-  Am_Array[85,n,l]/TotPop[85,n,l]
         BU_prev_As[k,n,l]<-  As_Array[85,n,l]/TotPop[85,n,l]
-        BU_prev_Cm[k,n,l]<-  Cm_Array[85,n,l]/TotPop[85,n,l]
+        
       }}}
   
   Prev_Ac.36y<- Prev_Ac[,,(115:150)] # from 1985 to 2020
@@ -109,11 +109,11 @@ for (place_name in municipalities){
   Prev_I.36y<- Prev_I[,,(115:150)]
   BU_prev_Am.36y<-BU_prev_Am[,,(115:150)]
   BU_prev_As.36y<-BU_prev_As[,,(115:150)]
-  BU_prev_Cm.36y<-BU_prev_Cm[,,(115:150)]
+  
   
   Case <- array(NA, dim=c(Nb_AgeClass,iterdis,36)) # TOTAL number of cases
   Case_Ac<- Case;  Case_As<- Case; Case_Ch<- Case; Case_ChS<- Case; Case_I<- Case;
-  BU_Case_Am<- Case; BU_Case_As<- Case; BU_Case_Cm<- Case;
+  BU_Case_Am<- Case; BU_Case_As<- Case; 
   
   for (i in 1:iterdis){
     for (j in 1:Nb_AgeClass){
@@ -125,7 +125,7 @@ for (place_name in municipalities){
         Case_I[j,i,k]<- (Prev_I.36y[j,i,k] * Obs.Pop[j,k] )
         BU_Case_Am[j,i,k]<- (BU_prev_Am.36y[j,i,k] * Obs.Pop[j,k] )
         BU_Case_As[j,i,k]<- (BU_prev_As.36y[j,i,k] * Obs.Pop[j,k] )
-        BU_Case_Cm[j,i,k]<- (BU_prev_Cm.36y[j,i,k] * Obs.Pop[j,k] )
+        
       }}}
   
   Cases_AC<- matrix(NA, iterdis,36)
@@ -227,13 +227,93 @@ for (place_name in municipalities){
   NbCases_ACt_StI [place_name,,k] <- suma(Cases_ACt_I[,k])
   }
   
+  #national level
+  for (k in 1:36){
+    National_NbCases_AC1_StAc[,k] <- National_NbCases_AC1_StAc[,k] + Cases_AC1_Ac[,k]
+    National_NbCases_AC1_StAs [,k] <- National_NbCases_AC1_StAs [,k] +Cases_AC1_As[,k]
+    National_NbCases_AC1_StCh [,k] <- National_NbCases_AC1_StCh[,k] + Cases_AC1_Ch[,k]
+    National_NbCases_AC1_StChS [,k] <- National_NbCases_AC1_StChS[,k] + Cases_AC1_ChS[,k]
+    National_NbCases_AC1_StI [,k] <- National_NbCases_AC1_StI [,k] + Cases_AC1_I[,k]
+    
+    National_NbCases_AC2_StAc [,k] <- National_NbCases_AC2_StAc [,k] + Cases_AC2_Ac[,k]
+    National_NbCases_AC2_StAs [,k] <- National_NbCases_AC2_StAs [,k] + Cases_AC2_As[,k]
+    National_NbCases_AC2_StCh[,k] <- National_NbCases_AC2_StCh[,k] + Cases_AC2_Ch[,k]
+    National_NbCases_AC2_StChS[,k] <- National_NbCases_AC2_StChS[,k] + Cases_AC2_ChS[,k]
+    National_NbCases_AC2_StI[,k] <- National_NbCases_AC2_StI[,k] + Cases_AC2_I[,k]
+    
+    National_NbCases_AC3_StAc[,k] <- National_NbCases_AC3_StAc[,k] + Cases_AC3_Ac[,k]
+    National_NbCases_AC3_StAs[,k] <- National_NbCases_AC3_StAs[,k] + Cases_AC3_As[,k]
+    National_NbCases_AC3_StCh[,k] <- National_NbCases_AC3_StCh[,k] + Cases_AC3_Ch[,k]
+    National_NbCases_AC3_StChS[,k] <- National_NbCases_AC3_StChS[,k] + Cases_AC3_ChS[,k]
+    National_NbCases_AC3_StI[,k] <- National_NbCases_AC3_StI[,k] + Cases_AC3_I[,k]
+    
+    National_NbCases_AC4_StAc[,k] <- National_NbCases_AC4_StAc[,k] + Cases_AC4_Ac[,k]
+    National_NbCases_AC4_StAs[,k] <- National_NbCases_AC4_StAs[,k] + Cases_AC4_As[,k]
+    National_NbCases_AC4_StCh[,k] <- National_NbCases_AC4_StCh[,k] + Cases_AC4_Ch[,k]
+    National_NbCases_AC4_StChS[,k] <- National_NbCases_AC4_StChS[,k] + Cases_AC4_ChS[,k]
+    National_NbCases_AC4_StI[,k] <- National_NbCases_AC4_StI[,k] + Cases_AC4_I[,k]
+    
+    National_NbCases_AC5_StAc [,k] <- National_NbCases_AC5_StAc [,k] + Cases_AC5_Ac[,k]
+    National_NbCases_AC5_StAs[,k] <- National_NbCases_AC5_StAs[,k] + Cases_AC5_As[,k]
+    National_NbCases_AC5_StCh[,k] <- National_NbCases_AC5_StCh[,k] + Cases_AC5_Ch[,k]
+    National_NbCases_AC5_StChS[,k] <-  National_NbCases_AC5_StChS[,k] + Cases_AC5_ChS[,k]
+    National_NbCases_AC5_StI[,k] <- National_NbCases_AC5_StI[,k] + Cases_AC5_I[,k]
+    
+    National_NbCases_ACt_StAc[,k] <- National_NbCases_ACt_StAc[,k] + Cases_ACt_Ac[,k]
+    National_NbCases_ACt_StAs[,k] <- National_NbCases_ACt_StAs[,k] + Cases_ACt_As[,k]
+    National_NbCases_ACt_StCh[,k] <- National_NbCases_ACt_StCh[,k] + Cases_ACt_Ch[,k]
+    National_NbCases_ACt_StChS[,k] <-  National_NbCases_ACt_StChS[,k] + Cases_ACt_ChS[,k]
+    National_NbCases_ACt_StI[,k] <- National_NbCases_ACt_StI[,k] + Cases_ACt_I[,k]
+  }
+  
+  #departmental level
+  dep<- dico$NAME_1_GDAM[which(dico$GID_2_GDAM==place_name)]
+  
+  for (k in 1:36){
+    Dep_NbCases_AC1_StAc[dep,,k] <- Dep_NbCases_AC1_StAc[dep,,k] + Cases_AC1_Ac[,k]
+    Dep_NbCases_AC1_StAs[dep,,k] <- Dep_NbCases_AC1_StAs[dep,,k] + Cases_AC1_As[,k]
+    Dep_NbCases_AC1_StCh [dep,,k] <- Dep_NbCases_AC1_StCh [dep,,k] + Cases_AC1_Ch[,k]
+    Dep_NbCases_AC1_StChS[dep,,k] <- Dep_NbCases_AC1_StChS[dep,,k] + Cases_AC1_ChS[,k]
+    Dep_NbCases_AC1_StI [dep,,k] <- Dep_NbCases_AC1_StI [dep,,k] + Cases_AC1_I[,k]
+    
+    Dep_NbCases_AC2_StAc[dep,,k] <-  Dep_NbCases_AC2_StAc[dep,,k] + Cases_AC2_Ac[,k]
+    Dep_NbCases_AC2_StAs[dep,,k] <- Dep_NbCases_AC2_StAs[dep,,k] + Cases_AC2_As[,k]
+    Dep_NbCases_AC2_StCh[dep,,k] <- Dep_NbCases_AC2_StCh[dep,,k] + Cases_AC2_Ch[,k]
+    Dep_NbCases_AC2_StChS [dep,,k] <- Dep_NbCases_AC2_StChS [dep,,k] + Cases_AC2_ChS[,k]
+    Dep_NbCases_AC2_StI [dep,,k] <- Dep_NbCases_AC2_StI [dep,,k] + Cases_AC2_I[,k]
+    
+    Dep_NbCases_AC3_StAc [dep,,k] <- Dep_NbCases_AC3_StAc [dep,,k] + Cases_AC3_Ac[,k]
+    Dep_NbCases_AC3_StAs [dep,,k] <- Dep_NbCases_AC3_StAs [dep,,k] + Cases_AC3_As[,k]
+    Dep_NbCases_AC3_StCh [dep,,k] <- Dep_NbCases_AC3_StCh [dep,,k] + Cases_AC3_Ch[,k]
+    Dep_NbCases_AC3_StChS [dep,,k] <- Dep_NbCases_AC3_StChS [dep,,k] + Cases_AC3_ChS[,k]
+    Dep_NbCases_AC3_StI [dep,,k] <- Dep_NbCases_AC3_StI [dep,,k] + Cases_AC3_I[,k]
+    
+    Dep_NbCases_AC4_StAc [dep,,k] <- Dep_NbCases_AC4_StAc [dep,,k] + Cases_AC4_Ac[,k]
+    Dep_NbCases_AC4_StAs [dep,,k] <- Dep_NbCases_AC4_StAs [dep,,k] + Cases_AC4_As[,k]
+    Dep_NbCases_AC4_StCh[dep,,k] <- Dep_NbCases_AC4_StCh[dep,,k] + Cases_AC4_Ch[,k]
+    Dep_NbCases_AC4_StChS [dep,,k] <- Dep_NbCases_AC4_StChS [dep,,k] + Cases_AC4_ChS[,k]
+    Dep_NbCases_AC4_StI [dep,,k] <- Dep_NbCases_AC4_StI [dep,,k] + Cases_AC4_I[,k]
+    
+    Dep_NbCases_AC5_StAc[dep,,k] <- Dep_NbCases_AC5_StAc[dep,,k]+ Cases_AC5_Ac[,k]
+    Dep_NbCases_AC5_StAs [dep,,k] <-  Dep_NbCases_AC5_StAs [dep,,k] + Cases_AC5_As[,k]
+    Dep_NbCases_AC5_StCh [dep,,k] <- Dep_NbCases_AC5_StCh [dep,,k] + Cases_AC5_Ch[,k]
+    Dep_NbCases_AC5_StChS [dep,,k] <- Dep_NbCases_AC5_StChS [dep,,k] + Cases_AC5_ChS[,k]
+    Dep_NbCases_AC5_StI [dep,,k] <- Dep_NbCases_AC5_StI [dep,,k] + Cases_AC5_I[,k]
+    
+    Dep_NbCases_ACt_StAc [dep,,k] <-  Dep_NbCases_ACt_StAc [dep,,k] + Cases_ACt_Ac[,k]
+    Dep_NbCases_ACt_StAs [dep,,k] <- Dep_NbCases_ACt_StAs [dep,,k] + Cases_ACt_As[,k]
+    Dep_NbCases_ACt_StCh [dep,,k] <- Dep_NbCases_ACt_StCh [dep,,k] + Cases_ACt_Ch[,k]
+    Dep_NbCases_ACt_StChS [dep,,k] <- Dep_NbCases_ACt_StChS [dep,,k] + Cases_ACt_ChS[,k]
+    Dep_NbCases_ACt_StI [dep,,k] <-  Dep_NbCases_ACt_StI [dep,,k] + Cases_ACt_I[,k]
+  }
+  
   #========================================
   # Number of Deaths by year from 1985 to 2020 at ADM2 level
   
   TotDeaths <- (Du_Array + Da_Array + Di_Array + Dm_Array + Ds_Array + DmI_Array+ DsI_Array + DmS_Array+ DsS_Array) # Total Deaths per year 
   StAc_Deaths <-  Da_Array 
   StAs_Deaths <-  Di_Array 
-  StCh_Deaths <-  Dm_Array + Ds_Array
+  StCh_Deaths <-  Dm_Array 
   StChS_Deaths <- Ds_Array
   StI_Deaths <-  Da_Array + Di_Array +  Dm_Array + Ds_Array
   
@@ -386,9 +466,89 @@ for (place_name in municipalities){
     NbDeath_ACt_StChS [place_name,,k] <- suma(Deaths_ACt_ChS[,k])
     NbDeath_ACt_StI [place_name,,k] <- suma(Deaths_ACt_I[,k])
     
-
   }
   
+  # National level
+  
+  for (k in 1:36){
+    National_NbDeath_AC1_StAc[,k] <- National_NbDeath_AC1_StAc[,k] + Deaths_AC1_Ac[,k]
+    National_NbDeath_AC1_StAs [,k] <- National_NbDeath_AC1_StAs [,k] + Deaths_AC1_As[,k]
+    National_NbDeath_AC1_StCh [,k] <- National_NbDeath_AC1_StCh [,k] + Deaths_AC1_Ch[,k]
+    National_NbDeath_AC1_StChS [,k] <- National_NbDeath_AC1_StChS [,k] + Deaths_AC1_ChS[,k]
+    National_NbDeath_AC1_StI [,k] <-  National_NbDeath_AC1_StI [,k] + Deaths_AC1_I[,k]
+    
+    National_NbDeath_AC2_StAc [,k] <- National_NbDeath_AC2_StAc [,k] + Deaths_AC2_Ac[,k]
+    National_NbDeath_AC2_StAs[,k] <- National_NbDeath_AC2_StAs[,k] + Deaths_AC2_As[,k]
+    National_NbDeath_AC2_StCh[,k] <- National_NbDeath_AC2_StCh[,k] + Deaths_AC2_Ch[,k]
+    National_NbDeath_AC2_StChS[,k] <- National_NbDeath_AC2_StChS[,k] + Deaths_AC2_ChS[,k]
+    National_NbDeath_AC2_StI[,k] <- National_NbDeath_AC2_StI[,k] + Deaths_AC2_I[,k]
+    
+    National_NbDeath_AC3_StAc[,k] <- National_NbDeath_AC3_StAc[,k] + Deaths_AC3_Ac[,k]
+    National_NbDeath_AC3_StAs[,k] <- National_NbDeath_AC3_StAs[,k] + Deaths_AC3_As[,k]
+    National_NbDeath_AC3_StCh[,k] <- National_NbDeath_AC3_StCh[,k] + Deaths_AC3_Ch[,k]
+    National_NbDeath_AC3_StChS[,k] <- National_NbDeath_AC3_StChS[,k] + Deaths_AC3_ChS[,k]
+    National_NbDeath_AC3_StI[,k] <- National_NbDeath_AC3_StI[,k] + Deaths_AC3_I[,k]
+    
+    National_NbDeath_AC4_StAc[,k] <- National_NbDeath_AC4_StAc[,k] + Deaths_AC4_Ac[,k]
+    National_NbDeath_AC4_StAs[,k] <- National_NbDeath_AC4_StAs[,k] + Deaths_AC4_As[,k]
+    National_NbDeath_AC4_StCh[,k] <- National_NbDeath_AC4_StCh[,k] + Deaths_AC4_Ch[,k]
+    National_NbDeath_AC4_StChS[,k] <- National_NbDeath_AC4_StChS[,k] + Deaths_AC4_ChS[,k]
+    National_NbDeath_AC4_StI[,k] <- National_NbDeath_AC4_StI[,k] + Deaths_AC4_I[,k]
+    
+    National_NbDeath_AC5_StAc[,k] <- National_NbDeath_AC5_StAc[,k] +  Deaths_AC5_Ac[,k]
+    National_NbDeath_AC5_StAs[,k] <- National_NbDeath_AC5_StAs[,k] + Deaths_AC5_As[,k]
+    National_NbDeath_AC5_StCh[,k] <- National_NbDeath_AC5_StCh[,k] + Deaths_AC5_Ch[,k]
+    National_NbDeath_AC5_StChS[,k] <- National_NbDeath_AC5_StChS[,k] + Deaths_AC5_ChS[,k]
+    National_NbDeath_AC5_StI[,k] <- National_NbDeath_AC5_StI[,k] + Deaths_AC5_I[,k]
+    
+    National_NbDeath_ACt_StAc[,k] <- National_NbDeath_ACt_StAc[,k] + Deaths_ACt_Ac[,k]
+    National_NbDeath_ACt_StAs[,k] <- National_NbDeath_ACt_StAs[,k] + Deaths_ACt_As[,k]
+    National_NbDeath_ACt_StCh[,k] <- National_NbDeath_ACt_StCh[,k] + Deaths_ACt_Ch[,k]
+    National_NbDeath_ACt_StChS[,k] <- National_NbDeath_ACt_StChS[,k] + Deaths_ACt_ChS[,k]
+    National_NbDeath_ACt_StI[,k] <-  National_NbDeath_ACt_StI[,k] + Deaths_ACt_I[,k]
+    
+  }
+  
+  #departmental level
+ 
+    for (k in 1:36){
+      Dep_NbDeath_AC1_StAc[dep,,k] <- Dep_NbDeath_AC1_StAc[dep,,k] + Deaths_AC1_Ac[,k]
+      Dep_NbDeath_AC1_StAs[dep,,k] <- Dep_NbDeath_AC1_StAs[dep,,k] + Deaths_AC1_As[,k]
+      Dep_NbDeath_AC1_StCh[dep,,k] <- Dep_NbDeath_AC1_StCh[dep,,k] + Deaths_AC1_Ch[,k]
+      Dep_NbDeath_AC1_StChS[dep,,k] <- Dep_NbDeath_AC1_StChS[dep,,k] + Deaths_AC1_ChS[,k]
+      Dep_NbDeath_AC1_StI[dep,,k] <- Dep_NbDeath_AC1_StI[dep,,k] + Deaths_AC1_I[,k]
+      
+      Dep_NbDeath_AC2_StAc[dep,,k] <- Dep_NbDeath_AC2_StAc[dep,,k] + Deaths_AC2_Ac[,k]
+      Dep_NbDeath_AC2_StAs[dep,,k] <- Dep_NbDeath_AC2_StAs[dep,,k] + Deaths_AC2_As[,k]
+      Dep_NbDeath_AC2_StCh[dep,,k] <- Dep_NbDeath_AC2_StCh[dep,,k] + Deaths_AC2_Ch[,k]
+      Dep_NbDeath_AC2_StChS[dep,,k] <- Dep_NbDeath_AC2_StChS[dep,,k] + Deaths_AC2_ChS[,k]
+      Dep_NbDeath_AC2_StI[dep,,k] <- Dep_NbDeath_AC2_StI[dep,,k] + Deaths_AC2_I[,k]
+      
+      Dep_NbDeath_AC3_StAc[dep,,k] <- Dep_NbDeath_AC3_StAc[dep,,k] + Deaths_AC3_Ac[,k]
+      Dep_NbDeath_AC3_StAs[dep,,k] <- Dep_NbDeath_AC3_StAs[dep,,k] + Deaths_AC3_As[,k]
+      Dep_NbDeath_AC3_StCh[dep,,k] <- Dep_NbDeath_AC3_StCh[dep,,k] + Deaths_AC3_Ch[,k]
+      Dep_NbDeath_AC3_StChS[dep,,k] <- Dep_NbDeath_AC3_StChS[dep,,k] + Deaths_AC3_ChS[,k]
+      Dep_NbDeath_AC3_StI[dep,,k] <- Dep_NbDeath_AC3_StI[dep,,k] + Deaths_AC3_I[,k]
+      
+      Dep_NbDeath_AC4_StAc[dep,,k] <- Dep_NbDeath_AC4_StAc[dep,,k] + Deaths_AC4_Ac[,k]
+      Dep_NbDeath_AC4_StAs[dep,,k] <- Dep_NbDeath_AC4_StAs[dep,,k] + Deaths_AC4_As[,k]
+      Dep_NbDeath_AC4_StCh[dep,,k] <- Dep_NbDeath_AC4_StCh[dep,,k] + Deaths_AC4_Ch[,k]
+      Dep_NbDeath_AC4_StChS[dep,,k] <- Dep_NbDeath_AC4_StChS[dep,,k] + Deaths_AC4_ChS[,k]
+      Dep_NbDeath_AC4_StI[dep,,k] <- Dep_NbDeath_AC4_StI[dep,,k] + Deaths_AC4_I[,k]
+      
+      Dep_NbDeath_AC5_StAc [dep,,k] <-  Dep_NbDeath_AC5_StAc [dep,,k] + Deaths_AC5_Ac[,k]
+      Dep_NbDeath_AC5_StAs [dep,,k] <- Dep_NbDeath_AC5_StAs [dep,,k] + Deaths_AC5_As[,k]
+      Dep_NbDeath_AC5_StCh [dep,,k] <- Dep_NbDeath_AC5_StCh [dep,,k] + Deaths_AC5_Ch[,k]
+      Dep_NbDeath_AC5_StChS [dep,,k] <- Dep_NbDeath_AC5_StChS [dep,,k] + Deaths_AC5_ChS[,k]
+      Dep_NbDeath_AC5_StI [dep,,k] <- Dep_NbDeath_AC5_StI [dep,,k] + Deaths_AC5_I[,k]
+      
+      Dep_NbDeath_ACt_StAc [dep,,k] <- Dep_NbDeath_ACt_StAc [dep,,k] + Deaths_ACt_Ac[,k]
+      Dep_NbDeath_ACt_StAs [dep,,k] <- Dep_NbDeath_ACt_StAs [dep,,k] + Deaths_ACt_As[,k]
+      Dep_NbDeath_ACt_StCh [dep,,k] <- Dep_NbDeath_ACt_StCh [dep,,k] + Deaths_ACt_Ch[,k]
+      Dep_NbDeath_ACt_StChS [dep,,k] <- Dep_NbDeath_ACt_StChS [dep,,k] + Deaths_ACt_ChS[,k]
+      Dep_NbDeath_ACt_StI [dep,,k] <- Dep_NbDeath_ACt_StI [dep,,k] + Deaths_ACt_I[,k]
+      
+    }
   #========================================
   # Burden from 1985 to 2020 at ADM2 level
   
@@ -497,6 +657,87 @@ for (place_name in municipalities){
     
   }
   
+  #National level
+  for (k in 1:36){
+    National_YLL_AC1_StAc[,k] <- National_YLL_AC1_StAc[,k] + YLL_AC1_Ac[,k]
+    National_YLL_AC1_StAs[,k] <- National_YLL_AC1_StAs[,k] + YLL_AC1_As[,k]
+    National_YLL_AC1_StCh[,k] <- National_YLL_AC1_StCh[,k] + YLL_AC1_Ch[,k]
+    National_YLL_AC1_StChS[,k] <- National_YLL_AC1_StChS[,k] + YLL_AC1_ChS[,k]
+    National_YLL_AC1_StI[,k] <- National_YLL_AC1_StI[,k] + YLL_AC1_I[,k]
+    
+    National_YLL_AC2_StAc[,k] <- National_YLL_AC2_StAc[,k] + YLL_AC2_Ac[,k]
+    National_YLL_AC2_StAs[,k] <- National_YLL_AC2_StAs[,k] + YLL_AC2_As[,k]
+    National_YLL_AC2_StCh[,k] <- National_YLL_AC2_StCh[,k] + YLL_AC2_Ch[,k]
+    National_YLL_AC2_StChS[,k] <- National_YLL_AC2_StChS[,k] + YLL_AC2_ChS[,k]
+    National_YLL_AC2_StI[,k] <- National_YLL_AC2_StI[,k] + YLL_AC2_I[,k]
+    
+    National_YLL_AC3_StAc[,k] <- National_YLL_AC3_StAc[,k] + YLL_AC3_Ac[,k]
+    National_YLL_AC3_StAs[,k] <- National_YLL_AC3_StAs[,k] + YLL_AC3_As[,k]
+    National_YLL_AC3_StCh[,k] <- National_YLL_AC3_StCh[,k] + YLL_AC3_Ch[,k]
+    National_YLL_AC3_StChS[,k] <- National_YLL_AC3_StChS[,k] + YLL_AC3_ChS[,k]
+    National_YLL_AC3_StI[,k] <- National_YLL_AC3_StI[,k] + YLL_AC3_I[,k]
+    
+    National_YLL_AC4_StAc[,k] <- National_YLL_AC4_StAc[,k] + YLL_AC4_Ac[,k]
+    National_YLL_AC4_StAs[,k] <- National_YLL_AC4_StAs[,k] + YLL_AC4_As[,k]
+    National_YLL_AC4_StCh[,k] <- National_YLL_AC4_StCh[,k] + YLL_AC4_Ch[,k]
+    National_YLL_AC4_StChS[,k] <- National_YLL_AC4_StChS[,k] + YLL_AC4_ChS[,k]
+    National_YLL_AC4_StI[,k] <- National_YLL_AC4_StI[,k] + YLL_AC4_I[,k]
+    
+    National_YLL_AC5_StAc[,k] <- National_YLL_AC5_StAc[,k] + YLL_AC5_Ac[,k]
+    National_YLL_AC5_StAs[,k] <- National_YLL_AC5_StAs[,k] + YLL_AC5_As[,k]
+    National_YLL_AC5_StCh[,k] <- National_YLL_AC5_StCh[,k] + YLL_AC5_Ch[,k]
+    National_YLL_AC5_StChS[,k] <- National_YLL_AC5_StChS[,k] + YLL_AC5_ChS[,k]
+    National_YLL_AC5_StI[,k] <- National_YLL_AC5_StI[,k] + YLL_AC5_I[,k]
+    
+    National_YLL_ACt_StAc[,k] <- National_YLL_ACt_StAc[,k] + YLL_ACt_Ac[,k]
+    National_YLL_ACt_StAs[,k] <- National_YLL_ACt_StAs[,k] + YLL_ACt_As[,k]
+    National_YLL_ACt_StCh[,k] <- National_YLL_ACt_StCh[,k] + YLL_ACt_Ch[,k]
+    National_YLL_ACt_StChS[,k] <- National_YLL_ACt_StChS[,k] + YLL_ACt_ChS[,k]
+    National_YLL_ACt_StI[,k] <- National_YLL_ACt_StI[,k] + YLL_ACt_I[,k]
+    
+  }
+  
+  
+  #departmental level
+   
+    for (k in 1:36){
+      Dep_YLL_AC1_StAc[dep,,k] <- Dep_YLL_AC1_StAc[dep,,k] + YLL_AC1_Ac[,k]
+      Dep_YLL_AC1_StAs [dep,,k] <- Dep_YLL_AC1_StAs [dep,,k] + YLL_AC1_As[,k]
+      Dep_YLL_AC1_StCh [dep,,k] <- Dep_YLL_AC1_StCh [dep,,k] + YLL_AC1_Ch[,k]
+      Dep_YLL_AC1_StChS [dep,,k] <- Dep_YLL_AC1_StChS [dep,,k] + YLL_AC1_ChS[,k]
+      Dep_YLL_AC1_StI[dep,,k]<- Dep_YLL_AC1_StI[dep,,k] + YLL_AC1_I[,k]
+      
+      Dep_YLL_AC2_StAc [dep,,k] <-  Dep_YLL_AC2_StAc [dep,,k] + YLL_AC2_Ac[,k]
+      Dep_YLL_AC2_StAs [dep,,k] <- Dep_YLL_AC2_StAs [dep,,k] + YLL_AC2_As[,k]
+      Dep_YLL_AC2_StCh[dep,,k] <- Dep_YLL_AC2_StCh[dep,,k] + YLL_AC2_Ch[,k]
+      Dep_YLL_AC2_StChS [dep,,k] <- Dep_YLL_AC2_StChS [dep,,k] + YLL_AC2_ChS[,k]
+      Dep_YLL_AC2_StI [dep,,k] <- Dep_YLL_AC2_StI [dep,,k] + YLL_AC2_I[,k]
+      
+      Dep_YLL_AC3_StAc[dep,,k] <- Dep_YLL_AC3_StAc[dep,,k] + YLL_AC3_Ac[,k]
+      Dep_YLL_AC3_StAs [dep,,k] <- Dep_YLL_AC3_StAs [dep,,k] + YLL_AC3_As[,k]
+      Dep_YLL_AC3_StCh [dep,,k] <- Dep_YLL_AC3_StCh [dep,,k] + YLL_AC3_Ch[,k]
+      Dep_YLL_AC3_StChS [dep,,k] <- Dep_YLL_AC3_StChS [dep,,k] + YLL_AC3_ChS[,k]
+      Dep_YLL_AC3_StI[dep,,k] <- Dep_YLL_AC3_StI[dep,,k] + YLL_AC3_I[,k]
+      
+      Dep_YLL_AC4_StAc [dep,,k] <-  Dep_YLL_AC4_StAc [dep,,k] + YLL_AC4_Ac[,k]
+      Dep_YLL_AC4_StAs [dep,,k] <- Dep_YLL_AC4_StAs [dep,,k] + YLL_AC4_As[,k]
+      Dep_YLL_AC4_StCh [dep,,k] <- Dep_YLL_AC4_StCh [dep,,k] + YLL_AC4_Ch[,k]
+      Dep_YLL_AC4_StChS [dep,,k] <- Dep_YLL_AC4_StChS [dep,,k] + YLL_AC4_ChS[,k]
+      Dep_YLL_AC4_StI [dep,,k] <- Dep_YLL_AC4_StI [dep,,k] + YLL_AC4_I[,k]
+      
+      Dep_YLL_AC5_StAc [dep,,k] <- Dep_YLL_AC5_StAc [dep,,k] + YLL_AC5_Ac[,k]
+      Dep_YLL_AC5_StAs [dep,,k] <- Dep_YLL_AC5_StAs [dep,,k] + YLL_AC5_As[,k]
+      Dep_YLL_AC5_StCh [dep,,k] <- Dep_YLL_AC5_StCh [dep,,k] + YLL_AC5_Ch[,k]
+      Dep_YLL_AC5_StChS [dep,,k] <- Dep_YLL_AC5_StChS [dep,,k] + YLL_AC5_ChS[,k]
+      Dep_YLL_AC5_StI [dep,,k] <- Dep_YLL_AC5_StI [dep,,k] + YLL_AC5_I[,k]
+      
+      Dep_YLL_ACt_StAc [dep,,k] <- Dep_YLL_ACt_StAc [dep,,k]+ YLL_ACt_Ac[,k]
+      Dep_YLL_ACt_StAs [dep,,k] <- Dep_YLL_ACt_StAs [dep,,k] + YLL_ACt_As[,k]
+      Dep_YLL_ACt_StCh [dep,,k] <- Dep_YLL_ACt_StCh [dep,,k] + YLL_ACt_Ch[,k]
+      Dep_YLL_ACt_StChS [dep,,k] <- Dep_YLL_ACt_StChS [dep,,k] + YLL_ACt_ChS[,k]
+      Dep_YLL_ACt_StI [dep,,k] <- Dep_YLL_ACt_StI [dep,,k] + YLL_ACt_I[,k]
+      
+    }  
   #================================== 
   #                YLD 
   #==================================
@@ -508,7 +749,7 @@ YLD<- array(NA, dim=c(Nb_AgeClass,iterdis,36))
     for (i in 1:iterdis){  
       for (j in 1: Nb_AgeClass){
         YLD_Ac[j,i,k] <- (BU_Case_Am[j,i,k] * params$wamD[j]) + (BU_Case_As[j,i,k] * params$wasD[j])
-        YLD_Ch[j,i,k] <- (BU_Case_Cm[j,i,k]* params$wcmD[j]) + (Case_ChS[j,i,k]* params$wcsD[j] )
+        YLD_Ch[j,i,k] <- (Case_Ch[j,i,k]* params$wcmD[j]) 
         YLD_ChS[j,i,k] <- Case_ChS[j,i,k]* params$wcsD[j]
         YLD_I[j,i,k] <-  YLD_Ac[j,i,k] + YLD_Ch[j,i,k]
       }}}
@@ -589,6 +830,75 @@ YLD<- array(NA, dim=c(Nb_AgeClass,iterdis,36))
     
   }
   
+  #National level
+  for (k in 1:36){
+    National_YLD_AC1_StAc[,k] <-  National_YLD_AC1_StAc[,k] + YLD_AC1_Ac[,k]
+    National_YLD_AC1_StCh[,k] <- National_YLD_AC1_StCh[,k] + YLD_AC1_Ch[,k]
+    National_YLD_AC1_StChS [,k] <- National_YLD_AC1_StChS [,k] + YLD_AC1_ChS[,k]
+    National_YLD_AC1_StI[,k] <- National_YLD_AC1_StI[,k] + YLD_AC1_I[,k]
+    
+    National_YLD_AC2_StAc[,k] <- National_YLD_AC2_StAc[,k] + YLD_AC2_Ac[,k]
+    National_YLD_AC2_StCh[,k] <- National_YLD_AC2_StCh[,k] + YLD_AC2_Ch[,k]
+    National_YLD_AC2_StChS[,k] <- National_YLD_AC2_StChS[,k] + YLD_AC2_ChS[,k]
+    National_YLD_AC2_StI[,k] <-  National_YLD_AC2_StI[,k] + YLD_AC2_I[,k]
+    
+    National_YLD_AC3_StAc[,k] <- National_YLD_AC3_StAc[,k] + YLD_AC3_Ac[,k]
+    National_YLD_AC3_StCh[,k] <- National_YLD_AC3_StCh[,k] + YLD_AC3_Ch[,k]
+    National_YLD_AC3_StChS[,k] <- National_YLD_AC3_StChS[,k] + YLD_AC3_ChS[,k]
+    National_YLD_AC3_StI[,k] <- National_YLD_AC3_StI[,k] + YLD_AC3_I[,k]
+    
+    National_YLD_AC4_StAc[,k] <- National_YLD_AC4_StAc[,k] + YLD_AC4_Ac[,k]
+    National_YLD_AC4_StCh[,k] <- National_YLD_AC4_StCh[,k] + YLD_AC4_Ch[,k]
+    National_YLD_AC4_StChS[,k] <- National_YLD_AC4_StChS[,k] + YLD_AC4_ChS[,k]
+    National_YLD_AC4_StI[,k] <- National_YLD_AC4_StI[,k] + YLD_AC4_I[,k]
+    
+    National_YLD_AC5_StAc[,k] <- National_YLD_AC5_StAc[,k] + YLD_AC5_Ac[,k]
+    National_YLD_AC5_StCh[,k] <- National_YLD_AC5_StCh[,k] + YLD_AC5_Ch[,k]
+    National_YLD_AC5_StChS [,k] <- National_YLD_AC5_StChS [,k] + YLD_AC5_ChS[,k]
+    National_YLD_AC5_StI[,k] <- National_YLD_AC5_StI[,k] + YLD_AC5_I[,k]
+    
+    National_YLD_ACt_StAc[,k] <- National_YLD_ACt_StAc[,k] + YLD_ACt_Ac[,k]
+    National_YLD_ACt_StCh[,k] <- National_YLD_ACt_StCh[,k] + YLD_ACt_Ch[,k]
+    National_YLD_ACt_StChS[,k] <- National_YLD_ACt_StChS[,k] + YLD_ACt_ChS[,k]
+    National_YLD_ACt_StI[,k] <- National_YLD_ACt_StI[,k] + YLD_ACt_I[,k]
+    
+  }
+  
+  # departmental level
+ 
+    for (k in 1:36){
+      Dep_YLD_AC1_StAc[dep,,k] <- Dep_YLD_AC1_StAc[dep,,k] +YLD_AC1_Ac[,k]
+      Dep_YLD_AC1_StCh [dep,,k] <- Dep_YLD_AC1_StCh [dep,,k] +YLD_AC1_Ch[,k]
+      Dep_YLD_AC1_StChS [dep,,k] <- Dep_YLD_AC1_StChS [dep,,k] + YLD_AC1_ChS[,k]
+      Dep_YLD_AC1_StI [dep,,k] <-  Dep_YLD_AC1_StI [dep,,k] +YLD_AC1_I[,k]
+      
+      Dep_YLD_AC2_StAc [dep,,k] <- Dep_YLD_AC2_StAc [dep,,k] + YLD_AC2_Ac[,k]
+      Dep_YLD_AC2_StCh[dep,,k] <- Dep_YLD_AC2_StCh[dep,,k] + YLD_AC2_Ch[,k]
+      Dep_YLD_AC2_StChS [dep,,k] <- Dep_YLD_AC2_StChS [dep,,k] + YLD_AC2_ChS[,k]
+      Dep_YLD_AC2_StI [dep,,k] <- Dep_YLD_AC2_StI [dep,,k] + YLD_AC2_I[,k]
+      
+      Dep_YLD_AC3_StAc [dep,,k] <- Dep_YLD_AC3_StAc [dep,,k] + YLD_AC3_Ac[,k]
+      Dep_YLD_AC3_StCh [dep,,k] <- Dep_YLD_AC3_StCh [dep,,k] + YLD_AC3_Ch[,k]
+      Dep_YLD_AC3_StChS [dep,,k] <- Dep_YLD_AC3_StChS [dep,,k] + YLD_AC3_ChS[,k]
+      Dep_YLD_AC3_StI [dep,,k] <- Dep_YLD_AC3_StI [dep,,k] + YLD_AC3_I[,k]
+      
+      Dep_YLD_AC4_StAc [dep,,k] <- Dep_YLD_AC4_StAc [dep,,k] +YLD_AC4_Ac[,k]
+      Dep_YLD_AC4_StCh [dep,,k] <- Dep_YLD_AC4_StCh [dep,,k] + YLD_AC4_Ch[,k]
+      Dep_YLD_AC4_StChS [dep,,k] <-  Dep_YLD_AC4_StChS [dep,,k] + YLD_AC4_ChS[,k]
+      Dep_YLD_AC4_StI [dep,,k] <- Dep_YLD_AC4_StI [dep,,k] + YLD_AC4_I[,k]
+      
+      Dep_YLD_AC5_StAc [dep,,k] <-  Dep_YLD_AC5_StAc [dep,,k] +YLD_AC5_Ac[,k]
+      Dep_YLD_AC5_StCh [dep,,k] <- Dep_YLD_AC5_StCh [dep,,k] + YLD_AC5_Ch[,k]
+      Dep_YLD_AC5_StChS [dep,,k] <-  Dep_YLD_AC5_StChS [dep,,k] +YLD_AC5_ChS[,k]
+      Dep_YLD_AC5_StI [dep,,k] <- Dep_YLD_AC5_StI [dep,,k] + YLD_AC5_I[,k]
+      
+      Dep_YLD_ACt_StAc [dep,,k] <- Dep_YLD_ACt_StAc [dep,,k] + YLD_ACt_Ac[,k]
+      Dep_YLD_ACt_StCh [dep,,k] <- Dep_YLD_ACt_StCh [dep,,k] + YLD_ACt_Ch[,k]
+      Dep_YLD_ACt_StChS [dep,,k] <- Dep_YLD_ACt_StChS [dep,,k] + YLD_ACt_ChS[,k]
+      Dep_YLD_ACt_StI [dep,,k] <- Dep_YLD_ACt_StI [dep,,k] + YLD_ACt_I[,k]
+      
+    }
+    
   #================================== 
   #                DALYs
   #==================================
@@ -668,6 +978,90 @@ YLD<- array(NA, dim=c(Nb_AgeClass,iterdis,36))
     
   }
   
+  #National level
+ 
+    for (k in 1:36){
+      National_DALYs_AC1_StAc[,k] <- National_DALYs_AC1_StAc[,k] + DALY_AC1_Ac[,k]
+      National_DALYs_AC1_StAs[,k] <- National_DALYs_AC1_StAs[,k] + DALY_AC1_As[,k]
+      National_DALYs_AC1_StCh[,k] <- National_DALYs_AC1_StCh[,k] + DALY_AC1_Ch[,k]
+      National_DALYs_AC1_StChS[,k] <- National_DALYs_AC1_StChS[,k] + DALY_AC1_ChS[,k]
+      National_DALYs_AC1_StI[,k] <- National_DALYs_AC1_StI[,k] + DALY_AC1_I[,k]
+      
+      National_DALYs_AC2_StAc[,k] <- National_DALYs_AC2_StAc[,k] + DALY_AC2_Ac[,k]
+      National_DALYs_AC2_StAs[,k] <-  National_DALYs_AC2_StAs[,k] + DALY_AC2_As[,k]
+      National_DALYs_AC2_StCh[,k] <- National_DALYs_AC2_StCh[,k] + DALY_AC2_Ch[,k]
+      National_DALYs_AC2_StChS[,k] <-  National_DALYs_AC2_StChS[,k] + DALY_AC2_ChS[,k]
+      National_DALYs_AC2_StI[,k] <- National_DALYs_AC2_StI[,k] + DALY_AC2_I[,k]
+      
+      National_DALYs_AC3_StAc[,k] <- National_DALYs_AC3_StAc[,k] + DALY_AC3_Ac[,k]
+      National_DALYs_AC3_StAs[,k] <- National_DALYs_AC3_StAs[,k] + DALY_AC3_As[,k]
+      National_DALYs_AC3_StCh[,k] <- National_DALYs_AC3_StCh[,k] + DALY_AC3_Ch[,k]
+      National_DALYs_AC3_StChS[,k] <- National_DALYs_AC3_StChS[,k] + DALY_AC3_ChS[,k]
+      National_DALYs_AC3_StI[,k] <- National_DALYs_AC3_StI[,k] + DALY_AC3_I[,k]
+      
+      National_DALYs_AC4_StAc[,k] <- National_DALYs_AC4_StAc[,k] + DALY_AC4_Ac[,k]
+      National_DALYs_AC4_StAs[,k] <- National_DALYs_AC4_StAs[,k] + DALY_AC4_As[,k]
+      National_DALYs_AC4_StCh[,k] <- National_DALYs_AC4_StCh[,k] + DALY_AC4_Ch[,k]
+      National_DALYs_AC4_StChS[,k] <- National_DALYs_AC4_StChS[,k] + DALY_AC4_ChS[,k]
+      National_DALYs_AC4_StI[,k] <- National_DALYs_AC4_StI[,k] + DALY_AC4_I[,k]
+      
+      National_DALYs_AC5_StAc[,k] <- National_DALYs_AC5_StAc[,k] + DALY_AC5_Ac[,k]
+      National_DALYs_AC5_StAs[,k] <-  National_DALYs_AC5_StAs[,k] + DALY_AC5_As[,k]
+      National_DALYs_AC5_StCh[,k] <- National_DALYs_AC5_StCh[,k] + DALY_AC5_Ch[,k]
+      National_DALYs_AC5_StChS[,k] <- National_DALYs_AC5_StChS[,k] + DALY_AC5_ChS[,k]
+      National_DALYs_AC5_StI[,k] <- National_DALYs_AC5_StI[,k] + DALY_AC5_I[,k]
+      
+      National_DALYs_ACt_StAc[,k] <- National_DALYs_ACt_StAc[,k] + DALY_ACt_Ac[,k]
+      National_DALYs_ACt_StAs[,k] <- National_DALYs_ACt_StAs[,k] + DALY_ACt_As[,k]
+      National_DALYs_ACt_StCh[,k] <- National_DALYs_ACt_StCh[,k] + DALY_ACt_Ch[,k]
+      National_DALYs_ACt_StChS[,k] <- National_DALYs_ACt_StChS[,k] + DALY_ACt_ChS[,k]
+      National_DALYs_ACt_StI[,k] <- National_DALYs_ACt_StI[,k] + DALY_ACt_I[,k]
+      
+    } 
+  dep<- dico$NAME_1_GDAM[which(dico$GID_2_GDAM==place_name)]
+  
+  for (k in 1:36){
+    Dep_NbCases_AC1_StAc[dep,,k] <- Dep_NbCases_AC1_StAc[dep,,k] + Cases_AC1_Ac[,k]
+    
+    for (k in 1:36){
+      Dep_DALYs_AC1_StAc[dep,,k] <- Dep_DALYs_AC1_StAc[dep,,k] + DALY_AC1_Ac[,k]
+      Dep_DALYs_AC1_StAs [dep,,k] <- Dep_DALYs_AC1_StAs [dep,,k] + DALY_AC1_As[,k]
+      Dep_DALYs_AC1_StCh [dep,,k] <- Dep_DALYs_AC1_StCh [dep,,k] + DALY_AC1_Ch[,k]
+      Dep_DALYs_AC1_StChS [dep,,k] <- Dep_DALYs_AC1_StChS [dep,,k] + DALY_AC1_ChS[,k]
+      Dep_DALYs_AC1_StI [dep,,k] <- Dep_DALYs_AC1_StI [dep,,k] +DALY_AC1_I[,k]
+      
+      Dep_DALYs_AC2_StAc [dep,,k] <- Dep_DALYs_AC2_StAc [dep,,k] + DALY_AC2_Ac[,k]
+      Dep_DALYs_AC2_StAs [dep,,k] <- Dep_DALYs_AC2_StAs [dep,,k] + DALY_AC2_As[,k]
+      Dep_DALYs_AC2_StCh[dep,,k] <- Dep_DALYs_AC2_StCh[dep,,k] + DALY_AC2_Ch[,k]
+      Dep_DALYs_AC2_StChS [dep,,k] <- Dep_DALYs_AC2_StChS [dep,,k] + DALY_AC2_ChS[,k]
+      Dep_DALYs_AC2_StI [dep,,k] <- Dep_DALYs_AC2_StI [dep,,k] + DALY_AC2_I[,k]
+      
+      Dep_DALYs_AC3_StAc [dep,,k] <- Dep_DALYs_AC3_StAc [dep,,k] +DALY_AC3_Ac[,k]
+      Dep_DALYs_AC3_StAs [dep,,k] <- Dep_DALYs_AC3_StAs [dep,,k] + DALY_AC3_As[,k]
+      Dep_DALYs_AC3_StCh [dep,,k] <-  Dep_DALYs_AC3_StCh [dep,,k] + DALY_AC3_Ch[,k]
+      Dep_DALYs_AC3_StChS [dep,,k] <- Dep_DALYs_AC3_StChS [dep,,k] + DALY_AC3_ChS[,k]
+      Dep_DALYs_AC3_StI [dep,,k] <- Dep_DALYs_AC3_StI [dep,,k] + DALY_AC3_I[,k]
+      
+      Dep_DALYs_AC4_StAc [dep,,k] <- Dep_DALYs_AC4_StAc [dep,,k] + DALY_AC4_Ac[,k]
+      Dep_DALYs_AC4_StAs [dep,,k] <-  Dep_DALYs_AC4_StAs [dep,,k] + DALY_AC4_As[,k]
+      Dep_DALYs_AC4_StCh [dep,,k] <-  Dep_DALYs_AC4_StCh [dep,,k] + DALY_AC4_Ch[,k]
+      Dep_DALYs_AC4_StChS [dep,,k] <- Dep_DALYs_AC4_StChS [dep,,k] + DALY_AC4_ChS[,k]
+      Dep_DALYs_AC4_StI [dep,,k] <- Dep_DALYs_AC4_StI [dep,,k] + DALY_AC4_I[,k]
+      
+      Dep_DALYs_AC5_StAc [dep,,k] <- Dep_DALYs_AC5_StAc [dep,,k] + DALY_AC5_Ac[,k]
+      Dep_DALYs_AC5_StAs [dep,,k] <- Dep_DALYs_AC5_StAs [dep,,k] + DALY_AC5_As[,k]
+      Dep_DALYs_AC5_StCh [dep,,k] <- Dep_DALYs_AC5_StCh [dep,,k] + DALY_AC5_Ch[,k]
+      Dep_DALYs_AC5_StChS [dep,,k] <- Dep_DALYs_AC5_StChS [dep,,k] + DALY_AC5_ChS[,k]
+      Dep_DALYs_AC5_StI [dep,,k] <-  Dep_DALYs_AC5_StI [dep,,k] + DALY_AC5_I[,k]
+      
+      Dep_DALYs_ACt_StAc [dep,,k] <- Dep_DALYs_ACt_StAc [dep,,k] + DALY_ACt_Ac[,k]
+      Dep_DALYs_ACt_StAs [dep,,k] <- Dep_DALYs_ACt_StAs [dep,,k] + DALY_ACt_As[,k]
+      Dep_DALYs_ACt_StCh [dep,,k] <- Dep_DALYs_ACt_StCh [dep,,k] + DALY_ACt_Ch[,k]
+      Dep_DALYs_ACt_StChS [dep,,k] <- Dep_DALYs_ACt_StChS [dep,,k] + DALY_ACt_ChS[,k]
+      Dep_DALYs_ACt_StI [dep,,k] <- Dep_DALYs_ACt_StI [dep,,k] + DALY_ACt_I[,k]
+      
+    }
+    
   }
 
 #cases
@@ -850,4 +1244,369 @@ saveRDS(DALYs_ACt_StAs, paste("ML_inputs/res/DALYs_ACt_StAs", setting, Nb_iter, 
 saveRDS(DALYs_ACt_StCh, paste("ML_inputs/res/DALYs_ACt_StCh", setting, Nb_iter, "it",sep="_"))
 saveRDS(DALYs_ACt_StChS, paste("ML_inputs/res/DALYs_ACt_StChS", setting, Nb_iter, "it",sep="_"))
 saveRDS(DALYs_ACt_StI, paste("ML_inputs/res/DALYs_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+
+#National
+#cases
+saveRDS(National_NbCases_AC1_StAc, paste("ML_inputs/res/National_NbCases_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC1_StAs, paste("ML_inputs/res/National_NbCases_AC1_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC1_StCh, paste("ML_inputs/res/National_NbCases_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC1_StChS, paste("ML_inputs/res/National_NbCases_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC1_StI, paste("ML_inputs/res/National_NbCases_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbCases_AC2_StAc, paste("ML_inputs/res/National_NbCases_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC2_StAs, paste("ML_inputs/res/National_NbCases_AC2_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC2_StCh, paste("ML_inputs/res/National_NbCases_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC2_StChS, paste("ML_inputs/res/National_NbCases_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC2_StI, paste("ML_inputs/res/National_NbCases_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbCases_AC3_StAc, paste("ML_inputs/res/National_NbCases_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC3_StAs, paste("ML_inputs/res/National_NbCases_AC3_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC3_StCh, paste("ML_inputs/res/National_NbCases_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC3_StChS, paste("ML_inputs/res/National_NbCases_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC3_StI, paste("ML_inputs/res/National_NbCases_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbCases_AC4_StAc, paste("ML_inputs/res/National_NbCases_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC4_StAs, paste("ML_inputs/res/National_NbCases_AC4_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC4_StCh, paste("ML_inputs/res/National_NbCases_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC4_StChS, paste("ML_inputs/res/National_NbCases_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC4_StI, paste("ML_inputs/res/National_NbCases_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbCases_AC5_StAc, paste("ML_inputs/res/National_NbCases_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC5_StAs, paste("ML_inputs/res/National_NbCases_AC5_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC5_StCh, paste("ML_inputs/res/National_NbCases_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC5_StChS, paste("ML_inputs/res/National_NbCases_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_AC5_StI, paste("ML_inputs/res/National_NbCases_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbCases_ACt_StAc, paste("ML_inputs/res/National_NbCases_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_ACt_StAs, paste("ML_inputs/res/National_NbCases_ACt_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_ACt_StCh, paste("ML_inputs/res/National_NbCases_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_ACt_StChS, paste("ML_inputs/res/National_NbCases_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbCases_ACt_StI, paste("ML_inputs/res/National_NbCases_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+#deaths
+saveRDS(National_NbDeath_AC1_StAc, paste("ML_inputs/res/National_NbDeath_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC1_StAs, paste("ML_inputs/res/National_NbDeath_AC1_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC1_StCh, paste("ML_inputs/res/National_NbDeath_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC1_StChS, paste("ML_inputs/res/National_NbDeath_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC1_StI, paste("ML_inputs/res/National_NbDeath_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbDeath_AC2_StAc, paste("ML_inputs/res/National_NbDeath_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC2_StAs, paste("ML_inputs/res/National_NbDeath_AC2_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC2_StCh, paste("ML_inputs/res/National_NbDeath_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC2_StChS, paste("ML_inputs/res/National_NbDeath_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC2_StI, paste("ML_inputs/res/National_NbDeath_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbDeath_AC3_StAc, paste("ML_inputs/res/National_NbDeath_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC3_StAs, paste("ML_inputs/res/National_NbDeath_AC3_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC3_StCh, paste("ML_inputs/res/National_NbDeath_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC3_StChS, paste("ML_inputs/res/National_NbDeath_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC3_StI, paste("ML_inputs/res/National_NbDeath_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbDeath_AC4_StAc, paste("ML_inputs/res/National_NbDeath_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC4_StAs, paste("ML_inputs/res/National_NbDeath_AC4_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC4_StCh, paste("ML_inputs/res/National_NbDeath_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC4_StChS, paste("ML_inputs/res/National_NbDeath_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC4_StI, paste("ML_inputs/res/National_NbDeath_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbDeath_AC5_StAc, paste("ML_inputs/res/National_NbDeath_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC5_StAs, paste("ML_inputs/res/National_NbDeath_AC5_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC5_StCh, paste("ML_inputs/res/National_NbDeath_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC5_StChS, paste("ML_inputs/res/National_NbDeath_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_AC5_StI, paste("ML_inputs/res/National_NbDeath_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_NbDeath_ACt_StAc, paste("ML_inputs/res/National_NbDeath_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_ACt_StAs, paste("ML_inputs/res/National_NbDeath_ACt_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_ACt_StCh, paste("ML_inputs/res/National_NbDeath_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_ACt_StChS, paste("ML_inputs/res/National_NbDeath_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_NbDeath_ACt_StI, paste("ML_inputs/res/National_NbDeath_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+
+#YLL
+saveRDS(National_YLL_AC1_StAc, paste("ML_inputs/res/National_YLL_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC1_StAs, paste("ML_inputs/res/National_YLL_AC1_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC1_StCh, paste("ML_inputs/res/National_YLL_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC1_StChS, paste("ML_inputs/res/National_YLL_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC1_StI, paste("ML_inputs/res/National_YLL_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLL_AC2_StAc, paste("ML_inputs/res/National_YLL_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC2_StAs, paste("ML_inputs/res/National_YLL_AC2_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC2_StCh, paste("ML_inputs/res/National_YLL_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC2_StChS, paste("ML_inputs/res/National_YLL_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC2_StI, paste("ML_inputs/res/National_YLL_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLL_AC3_StAc, paste("ML_inputs/res/National_YLL_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC3_StAs, paste("ML_inputs/res/National_YLL_AC3_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC3_StCh, paste("ML_inputs/res/National_YLL_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC3_StChS, paste("ML_inputs/res/National_YLL_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC3_StI, paste("ML_inputs/res/National_YLL_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLL_AC4_StAc, paste("ML_inputs/res/National_YLL_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC4_StAs, paste("ML_inputs/res/National_YLL_AC4_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC4_StCh, paste("ML_inputs/res/National_YLL_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC4_StChS, paste("ML_inputs/res/National_YLL_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC4_StI, paste("ML_inputs/res/National_YLL_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLL_AC5_StAc, paste("ML_inputs/res/National_YLL_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC5_StAs, paste("ML_inputs/res/National_YLL_AC5_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC5_StCh, paste("ML_inputs/res/National_YLL_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC5_StChS, paste("ML_inputs/res/National_YLL_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_AC5_StI, paste("ML_inputs/res/National_YLL_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLL_ACt_StAc, paste("ML_inputs/res/National_YLL_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_ACt_StAs, paste("ML_inputs/res/National_YLL_ACt_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_ACt_StCh, paste("ML_inputs/res/National_YLL_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_ACt_StChS, paste("ML_inputs/res/National_YLL_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLL_ACt_StI, paste("ML_inputs/res/National_YLL_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+#YLD
+saveRDS(National_YLD_AC1_StAc, paste("ML_inputs/res/National_YLD_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC1_StCh, paste("ML_inputs/res/National_YLD_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC1_StChS, paste("ML_inputs/res/National_YLD_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC1_StI, paste("ML_inputs/res/National_YLD_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLD_AC2_StAc, paste("ML_inputs/res/National_YLD_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC2_StCh, paste("ML_inputs/res/National_YLD_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC2_StChS, paste("ML_inputs/res/National_YLD_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC2_StI, paste("ML_inputs/res/National_YLD_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLD_AC3_StAc, paste("ML_inputs/res/National_YLD_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC3_StCh, paste("ML_inputs/res/National_YLD_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC3_StChS, paste("ML_inputs/res/National_YLD_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC3_StI, paste("ML_inputs/res/National_YLD_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLD_AC4_StAc, paste("ML_inputs/res/National_YLD_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC4_StCh, paste("ML_inputs/res/National_YLD_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC4_StChS, paste("ML_inputs/res/National_YLD_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC4_StI, paste("ML_inputs/res/National_YLD_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLD_AC5_StAc, paste("ML_inputs/res/National_YLD_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC5_StCh, paste("ML_inputs/res/National_YLD_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC5_StChS, paste("ML_inputs/res/National_YLD_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_AC5_StI, paste("ML_inputs/res/National_YLD_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_YLD_ACt_StAc, paste("ML_inputs/res/National_YLD_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_ACt_StCh, paste("ML_inputs/res/National_YLD_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_ACt_StChS, paste("ML_inputs/res/National_YLD_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_YLD_ACt_StI, paste("ML_inputs/res/National_YLD_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+
+#DALYs
+saveRDS(National_DALYs_AC1_StAc, paste("ML_inputs/res/National_DALYs_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC1_StAs, paste("ML_inputs/res/National_DALYs_AC1_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC1_StCh, paste("ML_inputs/res/National_DALYs_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC1_StChS, paste("ML_inputs/res/National_DALYs_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC1_StI, paste("ML_inputs/res/National_DALYs_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_DALYs_AC2_StAc, paste("ML_inputs/res/National_DALYs_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC2_StAs, paste("ML_inputs/res/National_DALYs_AC2_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC2_StCh, paste("ML_inputs/res/National_DALYs_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC2_StChS, paste("ML_inputs/res/National_DALYs_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC2_StI, paste("ML_inputs/res/National_DALYs_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_DALYs_AC3_StAc, paste("ML_inputs/res/National_DALYs_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC3_StAs, paste("ML_inputs/res/National_DALYs_AC3_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC3_StCh, paste("ML_inputs/res/National_DALYs_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC3_StChS, paste("ML_inputs/res/National_DALYs_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC3_StI, paste("ML_inputs/res/National_DALYs_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_DALYs_AC4_StAc, paste("ML_inputs/res/National_DALYs_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC4_StAs, paste("ML_inputs/res/National_DALYs_AC4_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC4_StCh, paste("ML_inputs/res/National_DALYs_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC4_StChS, paste("ML_inputs/res/National_DALYs_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC4_StI, paste("ML_inputs/res/National_DALYs_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_DALYs_AC5_StAc, paste("ML_inputs/res/National_DALYs_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC5_StAs, paste("ML_inputs/res/National_DALYs_AC5_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC5_StCh, paste("ML_inputs/res/National_DALYs_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC5_StChS, paste("ML_inputs/res/National_DALYs_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_AC5_StI, paste("ML_inputs/res/National_DALYs_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(National_DALYs_ACt_StAc, paste("ML_inputs/res/National_DALYs_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_ACt_StAs, paste("ML_inputs/res/National_DALYs_ACt_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_ACt_StCh, paste("ML_inputs/res/National_DALYs_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_ACt_StChS, paste("ML_inputs/res/National_DALYs_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(National_DALYs_ACt_StI, paste("ML_inputs/res/National_DALYs_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+#Dep
+#cases
+saveRDS(Dep_NbCases_AC1_StAc, paste("ML_inputs/res/Dep_NbCases_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC1_StAs, paste("ML_inputs/res/Dep_NbCases_AC1_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC1_StCh, paste("ML_inputs/res/Dep_NbCases_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC1_StChS, paste("ML_inputs/res/Dep_NbCases_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC1_StI, paste("ML_inputs/res/Dep_NbCases_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbCases_AC2_StAc, paste("ML_inputs/res/Dep_NbCases_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC2_StAs, paste("ML_inputs/res/Dep_NbCases_AC2_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC2_StCh, paste("ML_inputs/res/Dep_NbCases_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC2_StChS, paste("ML_inputs/res/Dep_NbCases_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC2_StI, paste("ML_inputs/res/Dep_NbCases_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbCases_AC3_StAc, paste("ML_inputs/res/Dep_NbCases_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC3_StAs, paste("ML_inputs/res/Dep_NbCases_AC3_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC3_StCh, paste("ML_inputs/res/Dep_NbCases_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC3_StChS, paste("ML_inputs/res/Dep_NbCases_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC3_StI, paste("ML_inputs/res/Dep_NbCases_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbCases_AC4_StAc, paste("ML_inputs/res/Dep_NbCases_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC4_StAs, paste("ML_inputs/res/Dep_NbCases_AC4_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC4_StCh, paste("ML_inputs/res/Dep_NbCases_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC4_StChS, paste("ML_inputs/res/Dep_NbCases_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC4_StI, paste("ML_inputs/res/Dep_NbCases_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbCases_AC5_StAc, paste("ML_inputs/res/Dep_NbCases_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC5_StAs, paste("ML_inputs/res/Dep_NbCases_AC5_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC5_StCh, paste("ML_inputs/res/Dep_NbCases_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC5_StChS, paste("ML_inputs/res/Dep_NbCases_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_AC5_StI, paste("ML_inputs/res/Dep_NbCases_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbCases_ACt_StAc, paste("ML_inputs/res/Dep_NbCases_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_ACt_StAs, paste("ML_inputs/res/Dep_NbCases_ACt_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_ACt_StCh, paste("ML_inputs/res/Dep_NbCases_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_ACt_StChS, paste("ML_inputs/res/Dep_NbCases_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbCases_ACt_StI, paste("ML_inputs/res/Dep_NbCases_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+#deaths
+saveRDS(Dep_NbDeath_AC1_StAc, paste("ML_inputs/res/Dep_NbDeath_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC1_StAs, paste("ML_inputs/res/Dep_NbDeath_AC1_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC1_StCh, paste("ML_inputs/res/Dep_NbDeath_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC1_StChS, paste("ML_inputs/res/Dep_NbDeath_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC1_StI, paste("ML_inputs/res/Dep_NbDeath_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbDeath_AC2_StAc, paste("ML_inputs/res/Dep_NbDeath_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC2_StAs, paste("ML_inputs/res/Dep_NbDeath_AC2_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC2_StCh, paste("ML_inputs/res/Dep_NbDeath_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC2_StChS, paste("ML_inputs/res/Dep_NbDeath_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC2_StI, paste("ML_inputs/res/Dep_NbDeath_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbDeath_AC3_StAc, paste("ML_inputs/res/Dep_NbDeath_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC3_StAs, paste("ML_inputs/res/Dep_NbDeath_AC3_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC3_StCh, paste("ML_inputs/res/Dep_NbDeath_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC3_StChS, paste("ML_inputs/res/Dep_NbDeath_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC3_StI, paste("ML_inputs/res/Dep_NbDeath_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbDeath_AC4_StAc, paste("ML_inputs/res/Dep_NbDeath_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC4_StAs, paste("ML_inputs/res/Dep_NbDeath_AC4_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC4_StCh, paste("ML_inputs/res/Dep_NbDeath_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC4_StChS, paste("ML_inputs/res/Dep_NbDeath_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC4_StI, paste("ML_inputs/res/Dep_NbDeath_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbDeath_AC5_StAc, paste("ML_inputs/res/Dep_NbDeath_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC5_StAs, paste("ML_inputs/res/Dep_NbDeath_AC5_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC5_StCh, paste("ML_inputs/res/Dep_NbDeath_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC5_StChS, paste("ML_inputs/res/Dep_NbDeath_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_AC5_StI, paste("ML_inputs/res/Dep_NbDeath_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_NbDeath_ACt_StAc, paste("ML_inputs/res/Dep_NbDeath_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_ACt_StAs, paste("ML_inputs/res/Dep_NbDeath_ACt_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_ACt_StCh, paste("ML_inputs/res/Dep_NbDeath_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_ACt_StChS, paste("ML_inputs/res/Dep_NbDeath_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_NbDeath_ACt_StI, paste("ML_inputs/res/Dep_NbDeath_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+
+#YLL
+saveRDS(Dep_YLL_AC1_StAc, paste("ML_inputs/res/Dep_YLL_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC1_StAs, paste("ML_inputs/res/Dep_YLL_AC1_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC1_StCh, paste("ML_inputs/res/Dep_YLL_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC1_StChS, paste("ML_inputs/res/Dep_YLL_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC1_StI, paste("ML_inputs/res/Dep_YLL_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLL_AC2_StAc, paste("ML_inputs/res/Dep_YLL_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC2_StAs, paste("ML_inputs/res/Dep_YLL_AC2_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC2_StCh, paste("ML_inputs/res/Dep_YLL_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC2_StChS, paste("ML_inputs/res/Dep_YLL_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC2_StI, paste("ML_inputs/res/Dep_YLL_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLL_AC3_StAc, paste("ML_inputs/res/Dep_YLL_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC3_StAs, paste("ML_inputs/res/Dep_YLL_AC3_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC3_StCh, paste("ML_inputs/res/Dep_YLL_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC3_StChS, paste("ML_inputs/res/Dep_YLL_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC3_StI, paste("ML_inputs/res/Dep_YLL_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLL_AC4_StAc, paste("ML_inputs/res/Dep_YLL_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC4_StAs, paste("ML_inputs/res/Dep_YLL_AC4_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC4_StCh, paste("ML_inputs/res/Dep_YLL_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC4_StChS, paste("ML_inputs/res/Dep_YLL_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC4_StI, paste("ML_inputs/res/Dep_YLL_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLL_AC5_StAc, paste("ML_inputs/res/Dep_YLL_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC5_StAs, paste("ML_inputs/res/Dep_YLL_AC5_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC5_StCh, paste("ML_inputs/res/Dep_YLL_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC5_StChS, paste("ML_inputs/res/Dep_YLL_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_AC5_StI, paste("ML_inputs/res/Dep_YLL_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLL_ACt_StAc, paste("ML_inputs/res/Dep_YLL_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_ACt_StAs, paste("ML_inputs/res/Dep_YLL_ACt_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_ACt_StCh, paste("ML_inputs/res/Dep_YLL_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_ACt_StChS, paste("ML_inputs/res/Dep_YLL_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLL_ACt_StI, paste("ML_inputs/res/Dep_YLL_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+#YLD
+saveRDS(Dep_YLD_AC1_StAc, paste("ML_inputs/res/Dep_YLD_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC1_StCh, paste("ML_inputs/res/Dep_YLD_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC1_StChS, paste("ML_inputs/res/Dep_YLD_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC1_StI, paste("ML_inputs/res/Dep_YLD_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLD_AC2_StAc, paste("ML_inputs/res/Dep_YLD_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC2_StCh, paste("ML_inputs/res/Dep_YLD_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC2_StChS, paste("ML_inputs/res/Dep_YLD_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC2_StI, paste("ML_inputs/res/Dep_YLD_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLD_AC3_StAc, paste("ML_inputs/res/Dep_YLD_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC3_StCh, paste("ML_inputs/res/Dep_YLD_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC3_StChS, paste("ML_inputs/res/Dep_YLD_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC3_StI, paste("ML_inputs/res/Dep_YLD_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLD_AC4_StAc, paste("ML_inputs/res/Dep_YLD_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC4_StCh, paste("ML_inputs/res/Dep_YLD_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC4_StChS, paste("ML_inputs/res/Dep_YLD_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC4_StI, paste("ML_inputs/res/Dep_YLD_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLD_AC5_StAc, paste("ML_inputs/res/Dep_YLD_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC5_StCh, paste("ML_inputs/res/Dep_YLD_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC5_StChS, paste("ML_inputs/res/Dep_YLD_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_AC5_StI, paste("ML_inputs/res/Dep_YLD_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_YLD_ACt_StAc, paste("ML_inputs/res/Dep_YLD_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_ACt_StCh, paste("ML_inputs/res/Dep_YLD_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_ACt_StChS, paste("ML_inputs/res/Dep_YLD_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_YLD_ACt_StI, paste("ML_inputs/res/Dep_YLD_ACt_StI", setting, Nb_iter, "it",sep="_"))
+
+
+#DALYs
+saveRDS(Dep_DALYs_AC1_StAc, paste("ML_inputs/res/Dep_DALYs_AC1_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC1_StAs, paste("ML_inputs/res/Dep_DALYs_AC1_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC1_StCh, paste("ML_inputs/res/Dep_DALYs_AC1_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC1_StChS, paste("ML_inputs/res/Dep_DALYs_AC1_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC1_StI, paste("ML_inputs/res/Dep_DALYs_AC1_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_DALYs_AC2_StAc, paste("ML_inputs/res/Dep_DALYs_AC2_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC2_StAs, paste("ML_inputs/res/Dep_DALYs_AC2_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC2_StCh, paste("ML_inputs/res/Dep_DALYs_AC2_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC2_StChS, paste("ML_inputs/res/Dep_DALYs_AC2_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC2_StI, paste("ML_inputs/res/Dep_DALYs_AC2_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_DALYs_AC3_StAc, paste("ML_inputs/res/Dep_DALYs_AC3_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC3_StAs, paste("ML_inputs/res/Dep_DALYs_AC3_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC3_StCh, paste("ML_inputs/res/Dep_DALYs_AC3_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC3_StChS, paste("ML_inputs/res/Dep_DALYs_AC3_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC3_StI, paste("ML_inputs/res/Dep_DALYs_AC3_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_DALYs_AC4_StAc, paste("ML_inputs/res/Dep_DALYs_AC4_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC4_StAs, paste("ML_inputs/res/Dep_DALYs_AC4_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC4_StCh, paste("ML_inputs/res/Dep_DALYs_AC4_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC4_StChS, paste("ML_inputs/res/Dep_DALYs_AC4_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC4_StI, paste("ML_inputs/res/Dep_DALYs_AC4_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_DALYs_AC5_StAc, paste("ML_inputs/res/Dep_DALYs_AC5_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC5_StAs, paste("ML_inputs/res/Dep_DALYs_AC5_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC5_StCh, paste("ML_inputs/res/Dep_DALYs_AC5_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC5_StChS, paste("ML_inputs/res/Dep_DALYs_AC5_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_AC5_StI, paste("ML_inputs/res/Dep_DALYs_AC5_StI", setting, Nb_iter, "it",sep="_"))
+
+saveRDS(Dep_DALYs_ACt_StAc, paste("ML_inputs/res/Dep_DALYs_ACt_StAc", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_ACt_StAs, paste("ML_inputs/res/Dep_DALYs_ACt_StAs", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_ACt_StCh, paste("ML_inputs/res/Dep_DALYs_ACt_StCh", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_ACt_StChS, paste("ML_inputs/res/Dep_DALYs_ACt_StChS", setting, Nb_iter, "it",sep="_"))
+saveRDS(Dep_DALYs_ACt_StI, paste("ML_inputs/res/Dep_DALYs_ACt_StI", setting, Nb_iter, "it",sep="_"))
 
