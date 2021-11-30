@@ -9,7 +9,13 @@
 # FoI inputs model : ML_A3_RFlog
 
 rm(list=ls(all.names=TRUE))
-library(xtable); library(Hmisc); require(ggplot2); library(reshape); require(grid);library(Rcpp); library(readxl)
+library(xtable)
+library(Hmisc)
+require(ggplot2)
+library(reshape) 
+require(grid)
+library(Rcpp)
+library(readxl)
 
 source('ML_inputs/Scripts/ADM2_FormatingData.R')
 source('ML_inputs/Scripts/ADM2_GetParameterDistributions.R')
@@ -32,7 +38,8 @@ iterdis<-Nb_iter
 source("ML_inputs/Scripts/Generate_output_files.R")
 
 
-for (place_name in municipalities){
+for (place_name in municipalities[1:5]){
+  # place_name <- municipalities[1]
   
   lambdaNy <- ADM2_FOI_import_and_format(place_name, setting,Nb_iter)
   params   <- ADM2_get_parameter_distribution(lambdaNy, place_name, setting)
@@ -186,7 +193,7 @@ for (place_name in municipalities){
   }
   
   suma<- function (x){
-    c(min(x), quantile(x, c(0.25, 0.5, 0.75)), max(x),mean(x), sd(x),IClo(x),ICup(x))
+    c(min(x), quantile(x, c(0.25, 0.5, 0.75)), max(x),mean(x), sd(x),IClo(x),ICup(x)) #quantile(x, c(0.025, 0.25, 0.5, 0.75, 0.975))? and remove IClo(x),ICup(x))?
   }
   
   for (k in 1:36){
@@ -751,7 +758,7 @@ YLD<- array(NA, dim=c(Nb_AgeClass,iterdis,36))
         YLD_Ac[j,i,k] <- (BU_Case_Am[j,i,k] * params$wamD[j]) + (BU_Case_As[j,i,k] * params$wasD[j])
         YLD_Ch[j,i,k] <- (Case_Ch[j,i,k]* params$wcmD[j]) 
         YLD_ChS[j,i,k] <- Case_ChS[j,i,k]* params$wcsD[j]
-        YLD_I[j,i,k] <-  YLD_Ac[j,i,k] + YLD_Ch[j,i,k]
+        YLD_I[j,i,k] <-  YLD_Ac[j,i,k] + YLD_Ch[j,i,k] + YLD_ChS[j,i,k]
       }}}
   
   YLD_AC<- matrix(NA, iterdis,36)
@@ -1018,10 +1025,10 @@ YLD<- array(NA, dim=c(Nb_AgeClass,iterdis,36))
       National_DALYs_ACt_StI[,k] <- National_DALYs_ACt_StI[,k] + DALY_ACt_I[,k]
       
     } 
-  dep<- dico$NAME_1_GDAM[which(dico$GID_2_GDAM==place_name)]
+  # dep<- dico$NAME_1_GDAM[which(dico$GID_2_GDAM==place_name)]
   
-  for (k in 1:36){
-    Dep_NbCases_AC1_StAc[dep,,k] <- Dep_NbCases_AC1_StAc[dep,,k] + Cases_AC1_Ac[,k]
+  # for (k in 1:36){
+  #   Dep_NbCases_AC1_StAc[dep,,k] <- Dep_NbCases_AC1_StAc[dep,,k] + Cases_AC1_Ac[,k]
     
     for (k in 1:36){
       Dep_DALYs_AC1_StAc[dep,,k] <- Dep_DALYs_AC1_StAc[dep,,k] + DALY_AC1_Ac[,k]
