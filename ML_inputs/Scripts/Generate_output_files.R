@@ -413,9 +413,9 @@ National_DALYs_ACt_StI <- National_template
 
 ##Dep level
 c.names<-1:iterdis
-r.names<- unique(dico$NAME_1_GDAM)
+r.names<- unique(dico$DPNOM)
 m.names<- years
-Dep_template<- array(0,dim=c(length(unique(dico$NAME_1_GDAM)),iterdis,length(years)),dimnames = list(r.names, c.names, m.names))
+Dep_template<- array(0,dim=c(length(unique(dico$DPNOM)),iterdis,length(years)),dimnames = list(r.names, c.names, m.names))
 
 Dep_NbCases_AC1_StAc <- Dep_template
 Dep_NbCases_AC1_StAs <- Dep_template
