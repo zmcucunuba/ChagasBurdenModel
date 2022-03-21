@@ -158,5 +158,26 @@ ggplot(data=Tot_Sum_Prev)+
   
   theme_classic()+labs(title = "National prevalence of Chagas disease (Total)", y="Prevalence", x="Years")+ theme(legend.position="right")+
   scale_color_manual(name="Disease Stages", breaks=c("Acute", "Asymptomatic", "Chronic Mild", "Chronic Severe"),
-                     values = c("Acute"="#00CC66", "Asymptomatic"="#3399FF", "Chronic Mild"="#FF9933","Chronic Severe"="#990066"))+scale_y_log10()
-ggsave("ML_inputs/res/Graphs/Graph_Prevalence_Time_National_Total.png", height = 3, width = 4.5)
+                     values = c("Acute"="#00CC66", "Asymptomatic"="#3399FF", "Chronic Mild"="#FF9933","Chronic Severe"="#990066"))+
+ coord_cartesian(ylim=c(0,0.01))
+ggsave("ML_inputs/res/Graphs/Graph_Prevalence_Time_National_Total_notlog.png", height = 3, width = 4.5)
+
+##figures for the paper:
+Urb_National_ACt_StI<- readRDS("ML_inputs/res/National_NbCases_ACt_StI_UrbanBigCT_100_it")
+Rur_National_ACt_StI<- readRDS("ML_inputs/res/National_NbCases_ACt_StI_rural_100_it")
+Tot_National_ACt_StI<- Urb_National_ACt_StI+Rur_National_ACt_StI
+
+Tot_Sum_StI<- t(apply(Tot_National_ACt_StI, 2,quantile, c(0.025, 0.5, 0.975)))
+colnames(Tot_Sum_StI)<- c("Tot_StAc_lo", "Tot_StAc_med", "Tot_StAc_up")
+
+Tot_Sum_StI[6,]/PopTotal$TotalPop[which(PopTotal$Year==1995)]#prevalence total in 1995
+Tot_Sum_StI[26,]/PopTotal$TotalPop[which(PopTotal$Year==2010)]#prevalence total in 2010
+Tot_Sum_StI[36,]/PopTotal$TotalPop[which(PopTotal$Year==2020)]#prevalence total in 2020
+
+
+# 
+(Tot_Sum_Prev$Tot_StAc_med[which(Tot_Sum_Prev$year==2020)]-Tot_Sum_Prev$Tot_StAc_med[which(Tot_Sum_Prev$year==1985)])/Tot_Sum_Prev$Tot_StAc_med[which(Tot_Sum_Prev$year==1985)]
+(Tot_Sum_Prev$Tot_StChS_med[which(Tot_Sum_Prev$year==2020)]-Tot_Sum_Prev$Tot_StChS_med[which(Tot_Sum_Prev$year==1985)])/Tot_Sum_Prev$Tot_StChS_med[which(Tot_Sum_Prev$year==1985)]
+
+(Tot_Sum_Prev$Tot_StAc_med[which(Tot_Sum_Prev$year==2020)]-Tot_Sum_Prev$Tot_StAc_med[which(Tot_Sum_Prev$year==1995)])/Tot_Sum_Prev$Tot_StAc_med[which(Tot_Sum_Prev$year==1995)]
+(Tot_Sum_Prev$Tot_StChS_med[which(Tot_Sum_Prev$year==2020)]-Tot_Sum_Prev$Tot_StChS_med[which(Tot_Sum_Prev$year==1995)])/Tot_Sum_Prev$Tot_StChS_med[which(Tot_Sum_Prev$year==1995)]

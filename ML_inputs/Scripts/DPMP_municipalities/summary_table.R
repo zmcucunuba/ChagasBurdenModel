@@ -125,6 +125,17 @@ tt<- t(apply(Dep_death2020, 1,quantile, c(0.025, 0.5, 0.975)))
 colnames(tt)<- c("AcuteCases_Q25","AcuteCases_med", "AcuteCases_Q75")
 Cases<- cbind(Cases, tt) 
 
+###asympt
+Dep_deathR<- readRDS("ML_inputs/res/Dep_NbCases_ACt_StAs_rural_100_it")
+Dep_deathU<- readRDS("ML_inputs/res/Dep_NbCases_ACt_StAs_UrbanBigCT_100_it")
+Dep_death<- Dep_deathU+Dep_deathR
+
+Dep_death2020<- Dep_death[,,35]
+tt<- t(apply(Dep_death2020, 1,quantile, c(0.025, 0.5, 0.975)))
+colnames(tt)<- c("AsympCases_Q25","AsympCases_med", "AsympCases_Q75")
+Cases<- cbind(Cases, tt) 
+
+
 ###chronic mild
 Dep_deathR<- readRDS("ML_inputs/res/Dep_NbCases_ACt_StCh_rural_100_it")
 Dep_deathU<- readRDS("ML_inputs/res/Dep_NbCases_ACt_StCh_UrbanBigCT_100_it")

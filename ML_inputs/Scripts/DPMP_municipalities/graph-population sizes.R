@@ -12,16 +12,20 @@ Total<- subset(brut, brut$`ÁREA GEOGRÁFICA`== "Total")
 years<- 1985:2020
 
 PopTotal<- matrix(NA, length(years), 2)
-for (i in 1:length(years)){
-  PopTotal[i,]<- c(years[i],sum(Urban[which(Total$AÑO==years[i]),7:107]))
-}
-PopTotal<- as.data.frame(PopTotal)
-colnames(PopTotal)<- c("Year", "Pop")
+PopUrban<- matrix(NA, length(years), 2)
 
-ggplot(data=PopTotal)+ geom_line(aes(x=Year, y=Pop)) + theme_classic()
+for (i in 1:length(years)){
+  PopTotal[i,]<- c(years[i],sum(Total[which(Total$AÑO==years[i]),7:107]))
+  PopUrban[i,]<- c(years[i],sum(Urban[which(Total$AÑO==years[i]),7:107]))
+  
+}
+PopTotal<- as.data.frame(cbind(PopTotal, PopUrban[,2]))
+colnames(PopTotal)<- c("Year", "Population", "urb")
+
+ggplot(data=PopTotal)+ geom_line(aes(x=Year, y=Population)) + theme_classic()+coord_cartesian(ylim=c(0, 6e+7)) + geom_line(aes(x=Year, y=urb), color="blue")
 ggsave("ML_inputs/res/Plot_PopTime.png")
 
-(PopTotal$Pop[which(PopTotal$Year==2020)]-PopTotal$Pop[which(PopTotal$Year==1990)])/PopTotal$Pop[which(PopTotal$Year==1990)]
+(PopTotal$Pop[which(PopTotal$Year==2020)]-PopTotal$Pop[which(PopTotal$Year==1995)])/PopTotal$Pop[which(PopTotal$Year==1995)]
 
 AC<-c("AC1", "AC2", "AC3", "AC4", "AC5")
 
