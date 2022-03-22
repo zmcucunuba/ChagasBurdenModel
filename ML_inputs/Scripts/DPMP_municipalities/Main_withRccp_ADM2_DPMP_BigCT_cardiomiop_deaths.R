@@ -156,6 +156,7 @@ for (place_name in municipalities){
   Cs_Deaths<- DsI_Array + DsS_Array
   Heart_Deaths<- DsI_Array + DsS_Array + DmS_Array + DmI_Array
   
+  dep<- dico$DPNOM[which(dico$HUMDATA_ADM2_PCODE==place_name)]
   
   Nb_AgeClass<- nrow(Obs.Pop)
   
@@ -213,7 +214,7 @@ for (place_name in municipalities){
          }}}
   
   Deaths_AC<- matrix(NA, iterdis,36)
-  Deaths_AC1_H<- Deaths_AC; Deaths_AC1_Cmild<- Deaths_AC; Deaths_AC1_Csev<- Deaths_A
+  Deaths_AC1_H<- Deaths_AC; Deaths_AC1_Cmild<- Deaths_AC; Deaths_AC1_Csev<- Deaths_AC
   Deaths_AC2_H<- Deaths_AC; Deaths_AC2_Cmild<- Deaths_AC; Deaths_AC2_Csev<- Deaths_AC
   Deaths_AC3_H<- Deaths_AC; Deaths_AC3_Cmild<- Deaths_AC; Deaths_AC3_Csev<- Deaths_AC
   Deaths_AC4_H<- Deaths_AC; Deaths_AC4_Cmild<- Deaths_AC; Deaths_AC4_Csev<- Deaths_AC
