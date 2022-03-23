@@ -59,3 +59,15 @@ length(MADCV_urb$MAD_CV_141[which(MADCV_urb$MAD_CV_141>=2)])
 
 length(MADCV_rur$MAD_CV_202[which(MADCV_rur$MAD_CV_202>=2)])# number of municipalities with cv>2 in 2020
 length(MADCV_urb$MAD_CV_202[which(MADCV_urb$MAD_CV_202>=2)])
+
+##deaths by cardiomyopathy
+urb<- readRDS("ML_inputs/res/National_NbDeath_ACt_H_urbanBigCT_100_it")
+rur<- readRDS("ML_inputs/res/National_NbDeath_ACt_H_rural_100_it")
+tot<- urb+rur
+summary(tot[,35])
+
+##death severe cardio
+urb<- readRDS("ML_inputs/res/National_NbDeath_ACt_Csev_urbanBigCT_100_it")
+rur<- readRDS("ML_inputs/res/National_NbDeath_ACt_Csev_rural_100_it")
+tot<- urb+rur
+summary(tot[,35])

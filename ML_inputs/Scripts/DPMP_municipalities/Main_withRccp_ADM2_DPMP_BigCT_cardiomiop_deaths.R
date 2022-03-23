@@ -23,8 +23,8 @@ sourceCpp('ML_inputs/Scripts/Rcpp_BurdenModel2.cpp')
 source ("ML_inputs/Scripts/FUN.R")
 
 #======== To be defined ==============
-setting <- "rural"
-setting2<- "rural"
+setting <- "urban"
+setting2<- "urbanBigCT"
 Nb_iter=100
 years<- 1985:2020
 # ====================================
