@@ -22,3 +22,5 @@ bigCt<- NbCases_ACt_StI_urb[paste0("CO",BigCities),,]
 bigCt2020<-bigCt[,,36]
 sum(bigCt[,3,36])
 sum(bigCt[,3,11])
+
+##
